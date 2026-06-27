@@ -1,0 +1,23 @@
+Raport klasyfikacji per klasa — Cechy geometryczne+RF
+============================================================
+
+Emocja              F1
+złość           0.5252
+wstręt          0.5031
+strach          0.3867
+radość          0.7958
+smutek          0.4665
+zaskoczenie     0.7115
+neutralny       0.5242
+
+Accuracy:      0.5924
+F1 (macro):    0.5590
+F1 (weighted): 0.5881
+Inferencja:    0.020 ms/próbkę
+Parametry:     0
+Rozmiar:       410.07 MB
+
+Dodatkowe:
+  classifier: rf
+  detection_rate_test: 0.9223
+  detection_rate_train: 0.9205

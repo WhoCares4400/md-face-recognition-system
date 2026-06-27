@@ -1,0 +1,18 @@
+Raport klasyfikacji per klasa — Transformer wizyjny (ViT-B/16, ImageNet)
+============================================================
+
+Emocja              F1
+złość           0.6182
+wstręt          0.7547
+strach          0.5658
+radość          0.8773
+smutek          0.5623
+zaskoczenie     0.8278
+neutralny       0.6439
+
+Accuracy:      0.6962
+F1 (macro):    0.6929
+F1 (weighted): 0.6959
+Inferencja:    21.201 ms/próbkę
+Parametry:     85,804,039
+Rozmiar:       327.32 MB

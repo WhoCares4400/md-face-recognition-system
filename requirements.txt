@@ -1,0 +1,27 @@
+# System rozpoznawania emocji — zależności
+# Python >= 3.10
+
+# Uczenie głębokie
+torch>=2.0
+torchvision>=0.15
+
+# Klasyczne ML i przetwarzanie danych
+scikit-learn>=1.3
+xgboost>=2.0
+numpy>=1.24
+pandas>=2.0
+
+# Wizja komputerowa i landmarki
+opencv-python>=4.8
+mediapipe>=0.10
+
+# Obrazy i wizualizacje
+Pillow>=10.0
+matplotlib>=3.7
+seaborn>=0.12
+
+# Instalacja:
+#   pip install -r requirements.txt
+#
+# Uwaga: na GPU zainstaluj torch zgodnie z instrukcją z pytorch.org
+# (dobór wersji CUDA), pozostałe pakiety bez zmian.

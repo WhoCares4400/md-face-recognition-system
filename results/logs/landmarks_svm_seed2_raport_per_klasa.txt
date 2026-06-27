@@ -1,0 +1,23 @@
+Raport klasyfikacji per klasa — Cechy geometryczne+SVM
+============================================================
+
+Emocja              F1
+złość           0.4916
+wstręt          0.3101
+strach          0.3154
+radość          0.8110
+smutek          0.4168
+zaskoczenie     0.7003
+neutralny       0.5119
+
+Accuracy:      0.5653
+F1 (macro):    0.5082
+F1 (weighted): 0.5632
+Inferencja:    1.470 ms/próbkę
+Parametry:     0
+Rozmiar:       4.04 MB
+
+Dodatkowe:
+  classifier: svm
+  detection_rate_test: 0.9223
+  detection_rate_train: 0.9205

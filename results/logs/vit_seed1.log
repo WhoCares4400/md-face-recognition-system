@@ -1,0 +1,118 @@
+======================================================================
+  EKSPERYMENT: vit_seed1
+======================================================================
+Środowisko:
+  data_uruchomienia: 2026-06-07 00:43:25
+  system: Windows-10-10.0.19045-SP0
+  python: 3.12.1
+  procesor: Intel64 Family 6 Model 141 Stepping 1, GenuineIntel
+  torch: 2.6.0+cu124
+  cuda_dostepne: True
+  gpu: NVIDIA GeForce RTX 3070 Laptop GPU
+  gpu_pamiec_GB: 8.0
+  wersja_torchvision: 0.21.0+cu124
+  wersja_sklearn: 1.9.0
+  wersja_xgboost: 3.3.0
+  wersja_mediapipe: 0.10.35
+  wersja_cv2: 4.13.0
+  wersja_numpy: 2.5.0
+
+Argumenty wywołania:
+  --model: vit
+  --data: ./fer2013
+  --epochs: 50
+  --batch_size: 64
+  --lr: 0.001
+  --tag: seed1
+  --backbone: mobilenet_v2
+  --variant: lite
+  --classifier: svm
+  --no_pretrained: False
+  --seed: 1
+
+Hiperparametry (TrainConfig):
+  epochs: 50
+  batch_size: 64
+  lr: 0.001
+  weight_decay: 0.0001
+  patience: 10
+  val_split: 0.1
+  num_workers: 2
+  use_class_weights: True
+  label_smoothing: 0.05
+  mixed_precision: True
+  extra: {}
+----------------------------------------------------------------------
+Urządzenie: cuda
+Liczności klas (train): [3613, 389, 3676, 6488, 4324, 2849, 4500]
+[Transformer wizyjny (ViT-Lite)] epoka   1/50 | strata_tren=2.0441 strata_wal=2.0410 acc_wal=0.1052 f1_wal=0.0782 | 46.9s
+[Transformer wizyjny (ViT-Lite)] epoka   2/50 | strata_tren=2.0397 strata_wal=2.0318 acc_wal=0.0355 f1_wal=0.0275 | 47.6s
+[Transformer wizyjny (ViT-Lite)] epoka   3/50 | strata_tren=2.0360 strata_wal=2.0184 acc_wal=0.1153 f1_wal=0.1019 | 46.6s
+[Transformer wizyjny (ViT-Lite)] epoka   4/50 | strata_tren=2.0294 strata_wal=2.0099 acc_wal=0.1314 f1_wal=0.1124 | 46.3s
+[Transformer wizyjny (ViT-Lite)] epoka   5/50 | strata_tren=2.0239 strata_wal=2.0169 acc_wal=0.1854 f1_wal=0.1492 | 46.6s
+[Transformer wizyjny (ViT-Lite)] epoka   6/50 | strata_tren=2.0177 strata_wal=1.9991 acc_wal=0.1711 f1_wal=0.1405 | 47.3s
+[Transformer wizyjny (ViT-Lite)] epoka   7/50 | strata_tren=2.0127 strata_wal=1.9938 acc_wal=0.1822 f1_wal=0.1301 | 47.5s
+[Transformer wizyjny (ViT-Lite)] epoka   8/50 | strata_tren=1.9986 strata_wal=1.9640 acc_wal=0.2488 f1_wal=0.1842 | 46.8s
+[Transformer wizyjny (ViT-Lite)] epoka   9/50 | strata_tren=1.9920 strata_wal=1.9602 acc_wal=0.2021 f1_wal=0.1663 | 46.0s
+[Transformer wizyjny (ViT-Lite)] epoka  10/50 | strata_tren=1.9810 strata_wal=1.9488 acc_wal=0.1533 f1_wal=0.1544 | 47.0s
+[Transformer wizyjny (ViT-Lite)] epoka  11/50 | strata_tren=1.9756 strata_wal=1.9302 acc_wal=0.3303 f1_wal=0.2325 | 48.3s
+[Transformer wizyjny (ViT-Lite)] epoka  12/50 | strata_tren=1.9651 strata_wal=1.9112 acc_wal=0.2948 f1_wal=0.2221 | 47.8s
+[Transformer wizyjny (ViT-Lite)] epoka  13/50 | strata_tren=1.9585 strata_wal=1.9168 acc_wal=0.2819 f1_wal=0.2107 | 47.2s
+[Transformer wizyjny (ViT-Lite)] epoka  14/50 | strata_tren=1.9518 strata_wal=1.9069 acc_wal=0.2735 f1_wal=0.2121 | 42.8s
+[Transformer wizyjny (ViT-Lite)] epoka  15/50 | strata_tren=1.9464 strata_wal=1.8842 acc_wal=0.2875 f1_wal=0.2193 | 38.6s
+[Transformer wizyjny (ViT-Lite)] epoka  16/50 | strata_tren=1.9414 strata_wal=1.8782 acc_wal=0.2491 f1_wal=0.2021 | 37.7s
+[Transformer wizyjny (ViT-Lite)] epoka  17/50 | strata_tren=1.9361 strata_wal=1.8786 acc_wal=0.2749 f1_wal=0.2174 | 37.6s
+[Transformer wizyjny (ViT-Lite)] epoka  18/50 | strata_tren=1.9257 strata_wal=1.8723 acc_wal=0.3317 f1_wal=0.2519 | 37.5s
+[Transformer wizyjny (ViT-Lite)] epoka  19/50 | strata_tren=1.9216 strata_wal=1.8686 acc_wal=0.3390 f1_wal=0.2695 | 37.7s
+[Transformer wizyjny (ViT-Lite)] epoka  20/50 | strata_tren=1.9169 strata_wal=1.8548 acc_wal=0.3094 f1_wal=0.2549 | 37.5s
+[Transformer wizyjny (ViT-Lite)] epoka  21/50 | strata_tren=1.9136 strata_wal=1.8495 acc_wal=0.3066 f1_wal=0.2489 | 37.6s
+[Transformer wizyjny (ViT-Lite)] epoka  22/50 | strata_tren=1.9092 strata_wal=1.8584 acc_wal=0.3307 f1_wal=0.2572 | 37.2s
+[Transformer wizyjny (ViT-Lite)] epoka  23/50 | strata_tren=1.9037 strata_wal=1.8649 acc_wal=0.3366 f1_wal=0.2516 | 37.0s
+[Transformer wizyjny (ViT-Lite)] epoka  24/50 | strata_tren=1.9009 strata_wal=1.8371 acc_wal=0.3310 f1_wal=0.2810 | 37.1s
+[Transformer wizyjny (ViT-Lite)] epoka  25/50 | strata_tren=1.8938 strata_wal=1.8358 acc_wal=0.3063 f1_wal=0.2656 | 37.3s
+[Transformer wizyjny (ViT-Lite)] epoka  26/50 | strata_tren=1.8913 strata_wal=1.8292 acc_wal=0.3355 f1_wal=0.2758 | 36.9s
+[Transformer wizyjny (ViT-Lite)] epoka  27/50 | strata_tren=1.8859 strata_wal=1.8268 acc_wal=0.3610 f1_wal=0.2896 | 37.4s
+[Transformer wizyjny (ViT-Lite)] epoka  28/50 | strata_tren=1.8847 strata_wal=1.8301 acc_wal=0.3282 f1_wal=0.2603 | 37.3s
+[Transformer wizyjny (ViT-Lite)] epoka  29/50 | strata_tren=1.8761 strata_wal=1.8213 acc_wal=0.3132 f1_wal=0.2730 | 36.8s
+[Transformer wizyjny (ViT-Lite)] epoka  30/50 | strata_tren=1.8751 strata_wal=1.8187 acc_wal=0.3659 f1_wal=0.2904 | 36.8s
+[Transformer wizyjny (ViT-Lite)] epoka  31/50 | strata_tren=1.8660 strata_wal=1.8073 acc_wal=0.3300 f1_wal=0.2828 | 37.2s
+[Transformer wizyjny (ViT-Lite)] epoka  32/50 | strata_tren=1.8601 strata_wal=1.8140 acc_wal=0.3181 f1_wal=0.2770 | 37.1s
+[Transformer wizyjny (ViT-Lite)] epoka  33/50 | strata_tren=1.8653 strata_wal=1.8004 acc_wal=0.3463 f1_wal=0.2986 | 37.2s
+[Transformer wizyjny (ViT-Lite)] epoka  34/50 | strata_tren=1.8573 strata_wal=1.7949 acc_wal=0.3425 f1_wal=0.2939 | 37.0s
+[Transformer wizyjny (ViT-Lite)] epoka  35/50 | strata_tren=1.8532 strata_wal=1.7973 acc_wal=0.3672 f1_wal=0.3089 | 36.9s
+[Transformer wizyjny (ViT-Lite)] epoka  36/50 | strata_tren=1.8521 strata_wal=1.8035 acc_wal=0.3084 f1_wal=0.2703 | 37.1s
+[Transformer wizyjny (ViT-Lite)] epoka  37/50 | strata_tren=1.8471 strata_wal=1.7975 acc_wal=0.3310 f1_wal=0.2790 | 37.0s
+[Transformer wizyjny (ViT-Lite)] epoka  38/50 | strata_tren=1.8433 strata_wal=1.7832 acc_wal=0.3380 f1_wal=0.2954 | 36.8s
+[Transformer wizyjny (ViT-Lite)] epoka  39/50 | strata_tren=1.8392 strata_wal=1.7859 acc_wal=0.3317 f1_wal=0.2869 | 37.1s
+[Transformer wizyjny (ViT-Lite)] epoka  40/50 | strata_tren=1.8386 strata_wal=1.7725 acc_wal=0.3672 f1_wal=0.3117 | 36.9s
+[Transformer wizyjny (ViT-Lite)] epoka  41/50 | strata_tren=1.8364 strata_wal=1.7764 acc_wal=0.3537 f1_wal=0.3070 | 36.9s
+[Transformer wizyjny (ViT-Lite)] epoka  42/50 | strata_tren=1.8341 strata_wal=1.7847 acc_wal=0.3582 f1_wal=0.3015 | 37.0s
+[Transformer wizyjny (ViT-Lite)] epoka  43/50 | strata_tren=1.8342 strata_wal=1.7772 acc_wal=0.3498 f1_wal=0.3043 | 36.8s
+[Transformer wizyjny (ViT-Lite)] epoka  44/50 | strata_tren=1.8366 strata_wal=1.7752 acc_wal=0.3554 f1_wal=0.3068 | 37.2s
+[Transformer wizyjny (ViT-Lite)] epoka  45/50 | strata_tren=1.8348 strata_wal=1.7740 acc_wal=0.3582 f1_wal=0.3089 | 36.8s
+[Transformer wizyjny (ViT-Lite)] epoka  46/50 | strata_tren=1.8283 strata_wal=1.7716 acc_wal=0.3603 f1_wal=0.3104 | 37.3s
+[Transformer wizyjny (ViT-Lite)] epoka  47/50 | strata_tren=1.8278 strata_wal=1.7701 acc_wal=0.3589 f1_wal=0.3118 | 37.2s
+[Transformer wizyjny (ViT-Lite)] epoka  48/50 | strata_tren=1.8266 strata_wal=1.7724 acc_wal=0.3568 f1_wal=0.3084 | 37.0s
+[Transformer wizyjny (ViT-Lite)] epoka  49/50 | strata_tren=1.8245 strata_wal=1.7727 acc_wal=0.3575 f1_wal=0.3090 | 37.1s
+[Transformer wizyjny (ViT-Lite)] epoka  50/50 | strata_tren=1.8273 strata_wal=1.7726 acc_wal=0.3571 f1_wal=0.3084 | 37.2s
+
+=== EWALUACJA (zbiór testowy) ===
+              precision    recall  f1-score   support
+
+       złość     0.3187    0.1367    0.1914       958
+      wstręt     0.0372    0.5225    0.0695       111
+      strach     0.1928    0.0469    0.0754      1024
+      radość     0.6041    0.6003    0.6022      1774
+      smutek     0.3656    0.2390    0.2890      1247
+ zaskoczenie     0.4840    0.6931    0.5700       831
+   neutralny     0.3951    0.3820    0.3885      1233
+
+    accuracy                         0.3688      7178
+   macro avg     0.3425    0.3744    0.3123      7178
+weighted avg     0.4073    0.3688    0.3691      7178
+
+Accuracy=0.3688 | F1-macro=0.3123 | inferencja=1.98 ms | parametry=1,006,599
+
+[dokumentacja] Raport per-klasa zapisany: C:\Users\Kuba\PycharmProjects\wykrywanie_emocji\results\logs\vit_seed1_raport_per_klasa.txt
+
+Całkowity czas eksperymentu: 2014.9 s (33.6 min)

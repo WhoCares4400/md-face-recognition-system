@@ -1,0 +1,123 @@
+======================================================================
+  EKSPERYMENT: transfer_main
+======================================================================
+Środowisko:
+  data_uruchomienia: 2026-06-05 14:16:44
+  system: Windows-10-10.0.19045-SP0
+  python: 3.12.1
+  procesor: Intel64 Family 6 Model 141 Stepping 1, GenuineIntel
+  torch: 2.6.0+cu124
+  cuda_dostepne: True
+  gpu: NVIDIA GeForce RTX 3070 Laptop GPU
+  gpu_pamiec_GB: 8.0
+  wersja_torchvision: 0.21.0+cu124
+  wersja_sklearn: 1.9.0
+  wersja_xgboost: 3.3.0
+  wersja_mediapipe: 0.10.35
+  wersja_cv2: 4.13.0
+  wersja_numpy: 2.5.0
+
+Argumenty wywołania:
+  --model: transfer
+  --data: ./fer2013
+  --epochs: 75
+  --batch_size: 64
+  --lr: 0.001
+  --tag: main
+  --backbone: mobilenet_v2
+  --variant: lite
+  --classifier: svm
+  --no_pretrained: False
+  --seed: 42
+
+Hiperparametry (TrainConfig):
+  epochs: 75
+  batch_size: 64
+  lr: 0.001
+  weight_decay: 0.0001
+  patience: 10
+  val_split: 0.1
+  num_workers: 2
+  use_class_weights: True
+  label_smoothing: 0.05
+  mixed_precision: True
+  extra: {}
+----------------------------------------------------------------------
+Urządzenie: cuda
+Liczności klas (train): [3613, 389, 3676, 6488, 4324, 2849, 4500]
+
+=== ETAP 1: ekstrakcja cech (zamrożony backbone) ===
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   1/18 | strata_tren=2.0140 strata_wal=1.9257 acc_wal=0.2659 f1_wal=0.2360 | 46.0s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   2/18 | strata_tren=1.9265 strata_wal=1.8782 acc_wal=0.3118 f1_wal=0.2638 | 47.7s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   3/18 | strata_tren=1.9060 strata_wal=1.8819 acc_wal=0.3024 f1_wal=0.2506 | 49.0s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   4/18 | strata_tren=1.8897 strata_wal=1.8600 acc_wal=0.2906 f1_wal=0.2688 | 48.9s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   5/18 | strata_tren=1.8867 strata_wal=1.8568 acc_wal=0.2829 f1_wal=0.2658 | 49.1s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   6/18 | strata_tren=1.8834 strata_wal=1.8615 acc_wal=0.3446 f1_wal=0.2950 | 49.3s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   7/18 | strata_tren=1.8778 strata_wal=1.8529 acc_wal=0.3352 f1_wal=0.2994 | 49.1s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   8/18 | strata_tren=1.8684 strata_wal=1.8467 acc_wal=0.3453 f1_wal=0.2950 | 47.2s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka   9/18 | strata_tren=1.8727 strata_wal=1.8413 acc_wal=0.3376 f1_wal=0.2950 | 46.7s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  10/18 | strata_tren=1.8682 strata_wal=1.8349 acc_wal=0.3289 f1_wal=0.2947 | 47.4s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  11/18 | strata_tren=1.8617 strata_wal=1.8320 acc_wal=0.3272 f1_wal=0.2913 | 46.4s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  12/18 | strata_tren=1.8610 strata_wal=1.8314 acc_wal=0.3422 f1_wal=0.2994 | 46.7s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  13/18 | strata_tren=1.8537 strata_wal=1.8347 acc_wal=0.3551 f1_wal=0.3039 | 47.0s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  14/18 | strata_tren=1.8501 strata_wal=1.8339 acc_wal=0.3603 f1_wal=0.3113 | 48.6s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  15/18 | strata_tren=1.8573 strata_wal=1.8302 acc_wal=0.3334 f1_wal=0.2979 | 48.8s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  16/18 | strata_tren=1.8524 strata_wal=1.8283 acc_wal=0.3401 f1_wal=0.2987 | 48.5s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  17/18 | strata_tren=1.8517 strata_wal=1.8319 acc_wal=0.3446 f1_wal=0.3012 | 47.1s
+[Uczenie transferowe (mobilenet_v2) [etap1]] epoka  18/18 | strata_tren=1.8449 strata_wal=1.8320 acc_wal=0.3446 f1_wal=0.3016 | 46.6s
+
+=== ETAP 2: fine-tuning (odmrożone górne warstwy) ===
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   1/75 | strata_tren=1.8500 strata_wal=1.8209 acc_wal=0.3648 f1_wal=0.3186 | 47.6s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   2/75 | strata_tren=1.8295 strata_wal=1.7924 acc_wal=0.3746 f1_wal=0.3218 | 46.6s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   3/75 | strata_tren=1.7916 strata_wal=1.7663 acc_wal=0.3739 f1_wal=0.3315 | 47.5s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   4/75 | strata_tren=1.7731 strata_wal=1.7270 acc_wal=0.3951 f1_wal=0.3476 | 47.0s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   5/75 | strata_tren=1.7350 strata_wal=1.7002 acc_wal=0.4059 f1_wal=0.3566 | 46.8s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   6/75 | strata_tren=1.7053 strata_wal=1.6800 acc_wal=0.4178 f1_wal=0.3675 | 48.5s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   7/75 | strata_tren=1.6870 strata_wal=1.6609 acc_wal=0.4261 f1_wal=0.3745 | 49.3s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   8/75 | strata_tren=1.6706 strata_wal=1.6350 acc_wal=0.4564 f1_wal=0.4085 | 49.3s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka   9/75 | strata_tren=1.6519 strata_wal=1.6286 acc_wal=0.4390 f1_wal=0.3924 | 49.4s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  10/75 | strata_tren=1.6436 strata_wal=1.6155 acc_wal=0.4610 f1_wal=0.4057 | 50.5s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  11/75 | strata_tren=1.6324 strata_wal=1.6109 acc_wal=0.4551 f1_wal=0.4056 | 49.8s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  12/75 | strata_tren=1.6184 strata_wal=1.6098 acc_wal=0.4638 f1_wal=0.4107 | 49.7s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  13/75 | strata_tren=1.6230 strata_wal=1.5899 acc_wal=0.4606 f1_wal=0.4074 | 49.6s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  14/75 | strata_tren=1.6024 strata_wal=1.5857 acc_wal=0.4638 f1_wal=0.4132 | 49.4s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  15/75 | strata_tren=1.5990 strata_wal=1.5830 acc_wal=0.4617 f1_wal=0.4112 | 50.0s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  16/75 | strata_tren=1.5880 strata_wal=1.5813 acc_wal=0.4683 f1_wal=0.4253 | 49.9s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  17/75 | strata_tren=1.5836 strata_wal=1.5776 acc_wal=0.4798 f1_wal=0.4313 | 50.3s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  18/75 | strata_tren=1.5663 strata_wal=1.5689 acc_wal=0.4753 f1_wal=0.4272 | 51.5s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  19/75 | strata_tren=1.5640 strata_wal=1.5601 acc_wal=0.4882 f1_wal=0.4420 | 49.7s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  20/75 | strata_tren=1.5440 strata_wal=1.5623 acc_wal=0.4868 f1_wal=0.4454 | 50.1s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  21/75 | strata_tren=1.5455 strata_wal=1.5556 acc_wal=0.4780 f1_wal=0.4349 | 48.5s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  22/75 | strata_tren=1.5438 strata_wal=1.5549 acc_wal=0.5000 f1_wal=0.4620 | 48.3s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  23/75 | strata_tren=1.5375 strata_wal=1.5463 acc_wal=0.4958 f1_wal=0.4586 | 47.9s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  24/75 | strata_tren=1.5282 strata_wal=1.5432 acc_wal=0.4927 f1_wal=0.4521 | 47.7s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  25/75 | strata_tren=1.5352 strata_wal=1.5469 acc_wal=0.4895 f1_wal=0.4480 | 48.0s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  26/75 | strata_tren=1.5247 strata_wal=1.5269 acc_wal=0.4878 f1_wal=0.4446 | 50.0s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  27/75 | strata_tren=1.5188 strata_wal=1.5316 acc_wal=0.4997 f1_wal=0.4579 | 50.0s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  28/75 | strata_tren=1.5115 strata_wal=1.5283 acc_wal=0.4899 f1_wal=0.4499 | 50.1s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  29/75 | strata_tren=1.5122 strata_wal=1.5191 acc_wal=0.4861 f1_wal=0.4466 | 50.1s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  30/75 | strata_tren=1.5104 strata_wal=1.5202 acc_wal=0.5003 f1_wal=0.4585 | 50.8s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  31/75 | strata_tren=1.4986 strata_wal=1.5161 acc_wal=0.4955 f1_wal=0.4525 | 48.1s
+[Uczenie transferowe (mobilenet_v2) [etap2]] epoka  32/75 | strata_tren=1.4934 strata_wal=1.5161 acc_wal=0.4930 f1_wal=0.4518 | 47.9s
+[Uczenie transferowe (mobilenet_v2) [etap2]] early stopping po 32 epokach.
+
+=== EWALUACJA (zbiór testowy) ===
+              precision    recall  f1-score   support
+
+       złość     0.3608    0.4290    0.3920       958
+      wstręt     0.1746    0.6306    0.2734       111
+      strach     0.4163    0.2090    0.2783      1024
+      radość     0.6841    0.7300    0.7063      1774
+      smutek     0.4431    0.3657    0.4007      1247
+ zaskoczenie     0.6061    0.6703    0.6366       831
+   neutralny     0.4786    0.4980    0.4881      1233
+
+    accuracy                         0.5039      7178
+   macro avg     0.4520    0.5046    0.4536      7178
+weighted avg     0.5087    0.5039    0.4979      7178
+
+Accuracy=0.5039 | F1-macro=0.4536 | inferencja=5.04 ms | parametry=1,536,327
+
+[dokumentacja] Raport per-klasa zapisany: C:\Users\Kuba\PycharmProjects\wykrywanie_emocji\results\logs\transfer_main_raport_per_klasa.txt
+
+Całkowity czas eksperymentu: 2457.1 s (41.0 min)

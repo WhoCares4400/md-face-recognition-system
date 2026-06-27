@@ -1,0 +1,18 @@
+Raport klasyfikacji per klasa — Uczenie transferowe (resnet50)
+============================================================
+
+Emocja              F1
+złość           0.6058
+wstręt          0.6605
+strach          0.5364
+radość          0.8691
+smutek          0.5430
+zaskoczenie     0.7939
+neutralny       0.6340
+
+Accuracy:      0.6779
+F1 (macro):    0.6632
+F1 (weighted): 0.6775
+Inferencja:    6.764 ms/próbkę
+Parametry:     23,809,543
+Rozmiar:       91.89 MB

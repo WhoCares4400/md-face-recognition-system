@@ -1,0 +1,5 @@
+Model,Dokładność,F1 (makro),F1 (ważone),Inferencja [ms],Parametry,Rozmiar [MB]
+CNN-od-zera (mini-Xception),0.5738,0.519,0.5648,1.336,56951,0.22
+Cechy geometryczne+SVM,0.5653,0.5082,0.5632,1.47,0,4.04
+Uczenie transferowe (mobilenet_v2),0.5155,0.4674,0.5116,4.166,1536327,9.88
+Transformer wizyjny (ViT-Lite),0.3729,0.3095,0.3671,1.96,1006599,3.84

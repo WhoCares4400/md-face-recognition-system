@@ -1,0 +1,18 @@
+Raport klasyfikacji per klasa — Transformer wizyjny (ViT-Lite)
+============================================================
+
+Emocja              F1
+złość           0.1161
+wstręt          0.0867
+strach          0.1069
+radość          0.6053
+smutek          0.3229
+zaskoczenie     0.5390
+neutralny       0.3895
+
+Accuracy:      0.3729
+F1 (macro):    0.3095
+F1 (weighted): 0.3671
+Inferencja:    1.960 ms/próbkę
+Parametry:     1,006,599
+Rozmiar:       3.84 MB

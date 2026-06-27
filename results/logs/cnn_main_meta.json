@@ -1,0 +1,69 @@
+{
+  "run_name": "cnn_main",
+  "environment": {
+    "data_uruchomienia": "2026-06-05 13:42:08",
+    "system": "Windows-10-10.0.19045-SP0",
+    "python": "3.12.1",
+    "procesor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "torch": "2.6.0+cu124",
+    "cuda_dostepne": true,
+    "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
+    "gpu_pamiec_GB": 8.0,
+    "wersja_torchvision": "0.21.0+cu124",
+    "wersja_sklearn": "1.9.0",
+    "wersja_xgboost": "3.3.0",
+    "wersja_mediapipe": "0.10.35",
+    "wersja_cv2": "4.13.0",
+    "wersja_numpy": "2.5.0"
+  },
+  "args": {
+    "model": "cnn",
+    "data": "./fer2013",
+    "epochs": 75,
+    "batch_size": 64,
+    "lr": 0.001,
+    "tag": "main",
+    "backbone": "mobilenet_v2",
+    "variant": "lite",
+    "classifier": "svm",
+    "no_pretrained": false,
+    "seed": 42
+  },
+  "config": {
+    "epochs": 75,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 10,
+    "val_split": 0.1,
+    "num_workers": 2,
+    "use_class_weights": true,
+    "label_smoothing": 0.05,
+    "mixed_precision": true,
+    "extra": {}
+  },
+  "czas_calkowity_s": 2076.6,
+  "extra": {},
+  "train": {
+    "best_f1_walidacja": 0.5503,
+    "epoki_wykonane": 50
+  },
+  "wynik": {
+    "Model": "CNN-od-zera (mini-Xception)",
+    "Dokładność": 0.5727,
+    "F1 (makro)": 0.5236,
+    "F1 (ważone)": 0.5788,
+    "Inferencja [ms]": 1.461,
+    "Parametry": 56951,
+    "Rozmiar [MB]": 0.22
+  },
+  "per_class_f1": {
+    "złość": 0.45724465558194777,
+    "wstręt": 0.27768014059753954,
+    "strach": 0.3728813559322034,
+    "radość": 0.8029585798816568,
+    "smutek": 0.46504065040650405,
+    "zaskoczenie": 0.7230104873534855,
+    "neutralny": 0.5664488017429193
+  }
+}

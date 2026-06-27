@@ -1,0 +1,69 @@
+{
+  "run_name": "transfer_seed1",
+  "environment": {
+    "data_uruchomienia": "2026-06-07 00:01:13",
+    "system": "Windows-10-10.0.19045-SP0",
+    "python": "3.12.1",
+    "procesor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "torch": "2.6.0+cu124",
+    "cuda_dostepne": true,
+    "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
+    "gpu_pamiec_GB": 8.0,
+    "wersja_torchvision": "0.21.0+cu124",
+    "wersja_sklearn": "1.9.0",
+    "wersja_xgboost": "3.3.0",
+    "wersja_mediapipe": "0.10.35",
+    "wersja_cv2": "4.13.0",
+    "wersja_numpy": "2.5.0"
+  },
+  "args": {
+    "model": "transfer",
+    "data": "./fer2013",
+    "epochs": 50,
+    "batch_size": 64,
+    "lr": 0.001,
+    "tag": "seed1",
+    "backbone": "mobilenet_v2",
+    "variant": "lite",
+    "classifier": "svm",
+    "no_pretrained": false,
+    "seed": 1
+  },
+  "config": {
+    "epochs": 50,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 10,
+    "val_split": 0.1,
+    "num_workers": 2,
+    "use_class_weights": true,
+    "label_smoothing": 0.05,
+    "mixed_precision": true,
+    "extra": {}
+  },
+  "czas_calkowity_s": 2532.5,
+  "extra": {},
+  "train": {
+    "best_f1_walidacja": 0.4613,
+    "epoki_wykonane": 40
+  },
+  "wynik": {
+    "Model": "Uczenie transferowe (mobilenet_v2)",
+    "Dokładność": 0.5132,
+    "F1 (makro)": 0.4659,
+    "F1 (ważone)": 0.5121,
+    "Inferencja [ms]": 5.326,
+    "Parametry": 1536327,
+    "Rozmiar [MB]": 9.88
+  },
+  "per_class_f1": {
+    "złość": 0.4174707973590655,
+    "wstręt": 0.2681992337164751,
+    "strach": 0.3055729492798998,
+    "radość": 0.7145299145299145,
+    "smutek": 0.4118382659441434,
+    "zaskoczenie": 0.6424747174301011,
+    "neutralny": 0.5011202389843167
+  }
+}

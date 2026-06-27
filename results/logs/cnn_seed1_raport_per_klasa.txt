@@ -1,0 +1,18 @@
+Raport klasyfikacji per klasa — CNN-od-zera (mini-Xception)
+============================================================
+
+Emocja              F1
+złość           0.4574
+wstręt          0.3590
+strach          0.3241
+radość          0.7983
+smutek          0.4520
+zaskoczenie     0.6878
+neutralny       0.5615
+
+Accuracy:      0.5713
+F1 (macro):    0.5200
+F1 (weighted): 0.5647
+Inferencja:    1.489 ms/próbkę
+Parametry:     56,951
+Rozmiar:       0.22 MB

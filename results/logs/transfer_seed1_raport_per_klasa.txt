@@ -1,0 +1,18 @@
+Raport klasyfikacji per klasa — Uczenie transferowe (mobilenet_v2)
+============================================================
+
+Emocja              F1
+złość           0.4175
+wstręt          0.2682
+strach          0.3056
+radość          0.7145
+smutek          0.4118
+zaskoczenie     0.6425
+neutralny       0.5011
+
+Accuracy:      0.5132
+F1 (macro):    0.4659
+F1 (weighted): 0.5121
+Inferencja:    5.326 ms/próbkę
+Parametry:     1,536,327
+Rozmiar:       9.88 MB

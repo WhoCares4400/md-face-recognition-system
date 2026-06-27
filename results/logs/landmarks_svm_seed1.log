@@ -1,0 +1,76 @@
+======================================================================
+  EKSPERYMENT: landmarks_svm_seed1
+======================================================================
+Środowisko:
+  data_uruchomienia: 2026-06-07 01:17:00
+  system: Windows-10-10.0.19045-SP0
+  python: 3.12.1
+  procesor: Intel64 Family 6 Model 141 Stepping 1, GenuineIntel
+  torch: 2.6.0+cu124
+  cuda_dostepne: True
+  gpu: NVIDIA GeForce RTX 3070 Laptop GPU
+  gpu_pamiec_GB: 8.0
+  wersja_torchvision: 0.21.0+cu124
+  wersja_sklearn: 1.9.0
+  wersja_xgboost: 3.3.0
+  wersja_mediapipe: 0.10.35
+  wersja_cv2: 4.13.0
+  wersja_numpy: 2.5.0
+
+Argumenty wywołania:
+  --model: landmarks
+  --data: ./fer2013
+  --epochs: 50
+  --batch_size: 64
+  --lr: 0.001
+  --tag: seed1
+  --backbone: mobilenet_v2
+  --variant: lite
+  --classifier: svm
+  --no_pretrained: False
+  --seed: 1
+
+Hiperparametry (TrainConfig):
+  epochs: 50
+  batch_size: 64
+  lr: 0.001
+  weight_decay: 0.0001
+  patience: 10
+  val_split: 0.1
+  num_workers: 2
+  use_class_weights: True
+  label_smoothing: 0.05
+  mixed_precision: True
+  extra: {}
+----------------------------------------------------------------------
+Wczytywanie surowych obrazów do ekstrakcji landmarków...
+
+Ekstrakcja cech (zbiór treningowy, 28709 obrazów)...
+  przetworzono 2000/28709 (odrzucone: 207)
+  przetworzono 4000/28709 (odrzucone: 455)
+  przetworzono 8000/28709 (odrzucone: 872)
+  przetworzono 10000/28709 (odrzucone: 982)
+  przetworzono 12000/28709 (odrzucone: 1049)
+  przetworzono 14000/28709 (odrzucone: 1135)
+  przetworzono 16000/28709 (odrzucone: 1209)
+  przetworzono 18000/28709 (odrzucone: 1307)
+  przetworzono 20000/28709 (odrzucone: 1384)
+  przetworzono 24000/28709 (odrzucone: 1893)
+  przetworzono 26000/28709 (odrzucone: 2137)
+  przetworzono 28000/28709 (odrzucone: 2242)
+  wykryto twarz w 92.1% obrazów (26427/28709)
+Ekstrakcja cech (zbiór testowy, 7178 obrazów)...
+  przetworzono 2000/7178 (odrzucone: 214)
+  przetworzono 4000/7178 (odrzucone: 292)
+  przetworzono 6000/7178 (odrzucone: 461)
+  wykryto twarz w 92.2% obrazów (6620/7178)
+
+Trening klasyfikatora: SVM
+C:\Users\Kuba\PycharmProjects\wykrywanie_emocji\.venv\Lib\site-packages\sklearn\svm\_base.py:239: FutureWarning: The `probability` parameter was deprecated in 1.9 and will be removed in version 1.11. Use `CalibratedClassifierCV(SVC(), ensemble=False)` instead of `SVC(probability=True)`
+  warnings.warn(
+
+Accuracy=0.5653 | F1-macro=0.5082 | wykrywalność twarzy (test)=92.2%
+
+[dokumentacja] Raport per-klasa zapisany: C:\Users\Kuba\PycharmProjects\wykrywanie_emocji\results\logs\landmarks_svm_seed1_raport_per_klasa.txt
+
+Całkowity czas eksperymentu: 465.2 s (7.8 min)

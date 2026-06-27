@@ -1,0 +1,23 @@
+run_name,data,model,accuracy,f1_macro,f1_weighted,inferencja_ms,parametry,rozmiar_MB,epoki,seed,czas_treningu_s,gpu,detection_rate_test
+cnn_main,2026-06-05 13:42:08,CNN-od-zera (mini-Xception),0.5727,0.5236,0.5788,1.461,56951,0.22,50,42,2076.6,NVIDIA GeForce RTX 3070 Laptop GPU,
+transfer_main,2026-06-05 14:16:44,Uczenie transferowe (mobilenet_v2),0.5039,0.4536,0.4979,5.041,1536327,9.88,32,42,2457.1,NVIDIA GeForce RTX 3070 Laptop GPU,
+vit_main,2026-06-05 14:57:41,Transformer wizyjny (ViT-Lite),0.3794,0.3101,0.3672,2.573,1006599,3.84,34,42,1491.5,NVIDIA GeForce RTX 3070 Laptop GPU,
+landmarks_svm_main,2026-06-05 15:22:33,Cechy geometryczne+SVM,0.5653,0.5082,0.5632,1.572,0,4.04,,42,571.7,NVIDIA GeForce RTX 3070 Laptop GPU,0.9223
+transfer_resnet18,2026-06-06 16:47:58,Uczenie transferowe (resnet18),0.679,0.6702,0.6775,2.831,11152647,43.18,34,42,2611.0,NVIDIA GeForce RTX 3070 Laptop GPU,
+transfer_resnet50,2026-06-06 17:31:36,Uczenie transferowe (resnet50),0.6779,0.6632,0.6775,6.764,23809543,91.89,29,42,2551.4,NVIDIA GeForce RTX 3070 Laptop GPU,
+transfer_effb0,2026-06-06 18:16:20,Uczenie transferowe (efficientnet_b0),0.6064,0.5773,0.6034,8.169,3485987,16.71,37,42,2632.8,NVIDIA GeForce RTX 3070 Laptop GPU,
+vit_vitb16,2026-06-06 19:06:50,"Transformer wizyjny (ViT-B/16, ImageNet)",0.6962,0.6929,0.6959,21.201,85804039,327.32,32,42,16250.0,NVIDIA GeForce RTX 3070 Laptop GPU,
+cnn_seed1,2026-06-06 23:33:52,CNN-od-zera (mini-Xception),0.5713,0.52,0.5647,1.489,56951,0.22,41,1,1641.0,NVIDIA GeForce RTX 3070 Laptop GPU,
+transfer_seed1,2026-06-07 00:01:13,Uczenie transferowe (mobilenet_v2),0.5132,0.4659,0.5121,5.326,1536327,9.88,40,1,2532.5,NVIDIA GeForce RTX 3070 Laptop GPU,
+vit_seed1,2026-06-07 00:43:25,Transformer wizyjny (ViT-Lite),0.3688,0.3123,0.3691,1.978,1006599,3.84,50,1,2014.9,NVIDIA GeForce RTX 3070 Laptop GPU,
+landmarks_svm_seed1,2026-06-07 01:17:00,Cechy geometryczne+SVM,0.5653,0.5082,0.5632,1.473,0,4.04,,1,465.2,NVIDIA GeForce RTX 3070 Laptop GPU,0.9223
+cnn_seed2,2026-06-07 01:24:50,CNN-od-zera (mini-Xception),0.5738,0.519,0.5648,1.336,56951,0.22,47,2,1673.6,NVIDIA GeForce RTX 3070 Laptop GPU,
+transfer_seed2,2026-06-07 01:52:44,Uczenie transferowe (mobilenet_v2),0.5155,0.4674,0.5116,4.166,1536327,9.88,50,2,2605.6,NVIDIA GeForce RTX 3070 Laptop GPU,
+vit_seed2,2026-06-07 02:36:10,Transformer wizyjny (ViT-Lite),0.3729,0.3095,0.3671,1.96,1006599,3.84,50,2,1854.6,NVIDIA GeForce RTX 3070 Laptop GPU,
+landmarks_svm_seed2,2026-06-07 03:07:04,Cechy geometryczne+SVM,0.5653,0.5082,0.5632,1.47,0,4.04,,2,457.3,NVIDIA GeForce RTX 3070 Laptop GPU,0.9223
+cnn_seed3,2026-06-07 03:14:46,CNN-od-zera (mini-Xception),0.5539,0.5017,0.5552,1.44,56951,0.22,49,3,1736.9,NVIDIA GeForce RTX 3070 Laptop GPU,
+transfer_seed3,2026-06-07 03:43:43,Uczenie transferowe (mobilenet_v2),0.5109,0.4635,0.5103,4.243,1536327,9.88,50,3,2595.3,NVIDIA GeForce RTX 3070 Laptop GPU,
+vit_seed3,2026-06-07 04:26:59,Transformer wizyjny (ViT-Lite),0.3784,0.3073,0.3647,1.951,1006599,3.84,37,3,1370.4,NVIDIA GeForce RTX 3070 Laptop GPU,
+landmarks_svm_seed3,2026-06-07 04:49:49,Cechy geometryczne+SVM,0.5653,0.5082,0.5632,1.439,0,4.04,,3,462.8,NVIDIA GeForce RTX 3070 Laptop GPU,0.9223
+landmarks_rf_rf,2026-06-27 13:11:51,Cechy geometryczne+RF,0.5924,0.559,0.5881,0.02,0,410.07,,42,370.9,NVIDIA GeForce RTX 3070 Laptop GPU,0.9223
+landmarks_xgb_xgb,2026-06-27 13:18:08,Cechy geometryczne+XGB,0.5852,0.5369,0.5792,0.013,0,13.16,,42,365.5,NVIDIA GeForce RTX 3070 Laptop GPU,0.9223

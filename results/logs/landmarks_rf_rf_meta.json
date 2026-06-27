@@ -1,0 +1,65 @@
+{
+  "run_name": "landmarks_rf_rf",
+  "environment": {
+    "data_uruchomienia": "2026-06-27 13:11:51",
+    "system": "Windows-10-10.0.19045-SP0",
+    "python": "3.12.1",
+    "procesor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "torch": "2.6.0+cu124",
+    "cuda_dostepne": true,
+    "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
+    "gpu_pamiec_GB": 8.0,
+    "wersja_torchvision": "0.21.0+cu124",
+    "wersja_sklearn": "1.9.0",
+    "wersja_xgboost": "3.3.0",
+    "wersja_mediapipe": "0.10.35",
+    "wersja_cv2": "4.13.0",
+    "wersja_numpy": "2.5.0"
+  },
+  "args": {
+    "model": "landmarks",
+    "data": "./fer2013",
+    "epochs": 60,
+    "batch_size": 64,
+    "lr": 0.001,
+    "tag": "rf",
+    "backbone": "mobilenet_v2",
+    "variant": "lite",
+    "classifier": "rf",
+    "no_pretrained": false,
+    "seed": 42
+  },
+  "config": {
+    "epochs": 60,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 10,
+    "val_split": 0.1,
+    "num_workers": 2,
+    "use_class_weights": true,
+    "label_smoothing": 0.05,
+    "mixed_precision": true,
+    "extra": {}
+  },
+  "czas_calkowity_s": 370.9,
+  "extra": {},
+  "wynik": {
+    "Model": "Cechy geometryczne+RF",
+    "Dokładność": 0.5924,
+    "F1 (makro)": 0.559,
+    "F1 (ważone)": 0.5881,
+    "Inferencja [ms]": 0.02,
+    "Parametry": 0,
+    "Rozmiar [MB]": 410.07
+  },
+  "per_class_f1": {
+    "złość": 0.5251667677380231,
+    "wstręt": 0.5030674846625767,
+    "strach": 0.3866943866943867,
+    "radość": 0.7958271236959762,
+    "smutek": 0.4665461121157324,
+    "zaskoczenie": 0.7115272088940902,
+    "neutralny": 0.5241786637135475
+  }
+}

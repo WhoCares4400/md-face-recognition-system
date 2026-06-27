@@ -1,0 +1,119 @@
+======================================================================
+  EKSPERYMENT: cnn_main
+======================================================================
+Środowisko:
+  data_uruchomienia: 2026-06-05 13:42:08
+  system: Windows-10-10.0.19045-SP0
+  python: 3.12.1
+  procesor: Intel64 Family 6 Model 141 Stepping 1, GenuineIntel
+  torch: 2.6.0+cu124
+  cuda_dostepne: True
+  gpu: NVIDIA GeForce RTX 3070 Laptop GPU
+  gpu_pamiec_GB: 8.0
+  wersja_torchvision: 0.21.0+cu124
+  wersja_sklearn: 1.9.0
+  wersja_xgboost: 3.3.0
+  wersja_mediapipe: 0.10.35
+  wersja_cv2: 4.13.0
+  wersja_numpy: 2.5.0
+
+Argumenty wywołania:
+  --model: cnn
+  --data: ./fer2013
+  --epochs: 75
+  --batch_size: 64
+  --lr: 0.001
+  --tag: main
+  --backbone: mobilenet_v2
+  --variant: lite
+  --classifier: svm
+  --no_pretrained: False
+  --seed: 42
+
+Hiperparametry (TrainConfig):
+  epochs: 75
+  batch_size: 64
+  lr: 0.001
+  weight_decay: 0.0001
+  patience: 10
+  val_split: 0.1
+  num_workers: 2
+  use_class_weights: True
+  label_smoothing: 0.05
+  mixed_precision: True
+  extra: {}
+----------------------------------------------------------------------
+Urządzenie: cuda
+Liczności klas (train): [3613, 389, 3676, 6488, 4324, 2849, 4500]
+[CNN-od-zera (mini-Xception)] epoka   1/75 | strata_tren=4.6971 strata_wal=2.4062 acc_wal=0.1923 f1_wal=0.1701 | 39.4s
+[CNN-od-zera (mini-Xception)] epoka   2/75 | strata_tren=2.4026 strata_wal=2.1708 acc_wal=0.1812 f1_wal=0.1569 | 39.2s
+[CNN-od-zera (mini-Xception)] epoka   3/75 | strata_tren=2.1754 strata_wal=2.0340 acc_wal=0.1784 f1_wal=0.1855 | 39.0s
+[CNN-od-zera (mini-Xception)] epoka   4/75 | strata_tren=2.1234 strata_wal=1.9918 acc_wal=0.2408 f1_wal=0.2127 | 39.8s
+[CNN-od-zera (mini-Xception)] epoka   5/75 | strata_tren=2.0624 strata_wal=1.9857 acc_wal=0.1822 f1_wal=0.1963 | 39.8s
+[CNN-od-zera (mini-Xception)] epoka   6/75 | strata_tren=2.0323 strata_wal=1.9617 acc_wal=0.1718 f1_wal=0.1770 | 38.6s
+[CNN-od-zera (mini-Xception)] epoka   7/75 | strata_tren=1.9727 strata_wal=1.8703 acc_wal=0.2303 f1_wal=0.2237 | 41.6s
+[CNN-od-zera (mini-Xception)] epoka   8/75 | strata_tren=1.9349 strata_wal=1.8642 acc_wal=0.3063 f1_wal=0.2732 | 41.4s
+[CNN-od-zera (mini-Xception)] epoka   9/75 | strata_tren=1.8934 strata_wal=1.7786 acc_wal=0.3401 f1_wal=0.2962 | 41.7s
+[CNN-od-zera (mini-Xception)] epoka  10/75 | strata_tren=1.8608 strata_wal=1.7905 acc_wal=0.3728 f1_wal=0.3247 | 42.3s
+[CNN-od-zera (mini-Xception)] epoka  11/75 | strata_tren=1.8186 strata_wal=1.8131 acc_wal=0.4035 f1_wal=0.3446 | 42.2s
+[CNN-od-zera (mini-Xception)] epoka  12/75 | strata_tren=1.7848 strata_wal=1.7596 acc_wal=0.4484 f1_wal=0.3947 | 41.9s
+[CNN-od-zera (mini-Xception)] epoka  13/75 | strata_tren=1.7532 strata_wal=1.7001 acc_wal=0.4066 f1_wal=0.3386 | 41.7s
+[CNN-od-zera (mini-Xception)] epoka  14/75 | strata_tren=1.7311 strata_wal=1.6451 acc_wal=0.4714 f1_wal=0.4232 | 42.3s
+[CNN-od-zera (mini-Xception)] epoka  15/75 | strata_tren=1.6968 strata_wal=1.6146 acc_wal=0.4833 f1_wal=0.4304 | 42.2s
+[CNN-od-zera (mini-Xception)] epoka  16/75 | strata_tren=1.6724 strata_wal=1.6015 acc_wal=0.4697 f1_wal=0.4096 | 42.2s
+[CNN-od-zera (mini-Xception)] epoka  17/75 | strata_tren=1.6604 strata_wal=1.5857 acc_wal=0.4847 f1_wal=0.4433 | 41.8s
+[CNN-od-zera (mini-Xception)] epoka  18/75 | strata_tren=1.6329 strata_wal=1.5999 acc_wal=0.4700 f1_wal=0.4161 | 41.8s
+[CNN-od-zera (mini-Xception)] epoka  19/75 | strata_tren=1.6205 strata_wal=1.5693 acc_wal=0.4895 f1_wal=0.4199 | 42.3s
+[CNN-od-zera (mini-Xception)] epoka  20/75 | strata_tren=1.6025 strata_wal=1.5578 acc_wal=0.4895 f1_wal=0.4565 | 41.5s
+[CNN-od-zera (mini-Xception)] epoka  21/75 | strata_tren=1.5899 strata_wal=1.5397 acc_wal=0.4784 f1_wal=0.4296 | 40.5s
+[CNN-od-zera (mini-Xception)] epoka  22/75 | strata_tren=1.5713 strata_wal=1.5305 acc_wal=0.5125 f1_wal=0.4572 | 40.3s
+[CNN-od-zera (mini-Xception)] epoka  23/75 | strata_tren=1.5625 strata_wal=1.4991 acc_wal=0.4972 f1_wal=0.4498 | 40.1s
+[CNN-od-zera (mini-Xception)] epoka  24/75 | strata_tren=1.5476 strata_wal=1.5013 acc_wal=0.5251 f1_wal=0.4778 | 40.6s
+[CNN-od-zera (mini-Xception)] epoka  25/75 | strata_tren=1.5382 strata_wal=1.4923 acc_wal=0.5220 f1_wal=0.4597 | 39.3s
+[CNN-od-zera (mini-Xception)] epoka  26/75 | strata_tren=1.5328 strata_wal=1.4881 acc_wal=0.5247 f1_wal=0.4701 | 40.1s
+[CNN-od-zera (mini-Xception)] epoka  27/75 | strata_tren=1.5241 strata_wal=1.4647 acc_wal=0.5164 f1_wal=0.4699 | 41.1s
+[CNN-od-zera (mini-Xception)] epoka  28/75 | strata_tren=1.5106 strata_wal=1.4637 acc_wal=0.5373 f1_wal=0.4892 | 41.9s
+[CNN-od-zera (mini-Xception)] epoka  29/75 | strata_tren=1.5023 strata_wal=1.4898 acc_wal=0.5484 f1_wal=0.4956 | 41.9s
+[CNN-od-zera (mini-Xception)] epoka  30/75 | strata_tren=1.4972 strata_wal=1.4485 acc_wal=0.5077 f1_wal=0.4694 | 42.0s
+[CNN-od-zera (mini-Xception)] epoka  31/75 | strata_tren=1.4883 strata_wal=1.4754 acc_wal=0.5275 f1_wal=0.4623 | 41.9s
+[CNN-od-zera (mini-Xception)] epoka  32/75 | strata_tren=1.4879 strata_wal=1.4395 acc_wal=0.5401 f1_wal=0.4823 | 42.5s
+[CNN-od-zera (mini-Xception)] epoka  33/75 | strata_tren=1.4799 strata_wal=1.4832 acc_wal=0.5369 f1_wal=0.4843 | 40.7s
+[CNN-od-zera (mini-Xception)] epoka  34/75 | strata_tren=1.4660 strata_wal=1.4764 acc_wal=0.5509 f1_wal=0.4873 | 40.5s
+[CNN-od-zera (mini-Xception)] epoka  35/75 | strata_tren=1.4586 strata_wal=1.4361 acc_wal=0.5460 f1_wal=0.4965 | 39.5s
+[CNN-od-zera (mini-Xception)] epoka  36/75 | strata_tren=1.4498 strata_wal=1.4204 acc_wal=0.5425 f1_wal=0.5012 | 39.9s
+[CNN-od-zera (mini-Xception)] epoka  37/75 | strata_tren=1.4445 strata_wal=1.4167 acc_wal=0.5439 f1_wal=0.4932 | 39.8s
+[CNN-od-zera (mini-Xception)] epoka  38/75 | strata_tren=1.4444 strata_wal=1.4013 acc_wal=0.5627 f1_wal=0.5085 | 39.7s
+[CNN-od-zera (mini-Xception)] epoka  39/75 | strata_tren=1.4309 strata_wal=1.4048 acc_wal=0.5509 f1_wal=0.4873 | 41.5s
+[CNN-od-zera (mini-Xception)] epoka  40/75 | strata_tren=1.4298 strata_wal=1.3836 acc_wal=0.5899 f1_wal=0.5503 | 42.1s
+[CNN-od-zera (mini-Xception)] epoka  41/75 | strata_tren=1.4241 strata_wal=1.3743 acc_wal=0.5749 f1_wal=0.5285 | 42.1s
+[CNN-od-zera (mini-Xception)] epoka  42/75 | strata_tren=1.4171 strata_wal=1.3832 acc_wal=0.5815 f1_wal=0.5286 | 42.4s
+[CNN-od-zera (mini-Xception)] epoka  43/75 | strata_tren=1.4085 strata_wal=1.3683 acc_wal=0.5805 f1_wal=0.5245 | 42.4s
+[CNN-od-zera (mini-Xception)] epoka  44/75 | strata_tren=1.4101 strata_wal=1.3776 acc_wal=0.5854 f1_wal=0.5441 | 41.9s
+[CNN-od-zera (mini-Xception)] epoka  45/75 | strata_tren=1.3977 strata_wal=1.3808 acc_wal=0.5742 f1_wal=0.5255 | 42.6s
+[CNN-od-zera (mini-Xception)] epoka  46/75 | strata_tren=1.3927 strata_wal=1.3544 acc_wal=0.5780 f1_wal=0.5371 | 42.6s
+[CNN-od-zera (mini-Xception)] epoka  47/75 | strata_tren=1.3979 strata_wal=1.3709 acc_wal=0.5714 f1_wal=0.5325 | 40.5s
+[CNN-od-zera (mini-Xception)] epoka  48/75 | strata_tren=1.3842 strata_wal=1.3608 acc_wal=0.5843 f1_wal=0.5367 | 40.0s
+[CNN-od-zera (mini-Xception)] epoka  49/75 | strata_tren=1.3834 strata_wal=1.3640 acc_wal=0.5760 f1_wal=0.5289 | 40.0s
+[CNN-od-zera (mini-Xception)] epoka  50/75 | strata_tren=1.3822 strata_wal=1.3469 acc_wal=0.5864 f1_wal=0.5434 | 40.1s
+[CNN-od-zera (mini-Xception)] early stopping po 50 epokach.
+
+=== EWALUACJA (zbiór testowy) ===
+              precision    recall  f1-score   support
+
+       złość     0.5303    0.4019    0.4572       958
+      wstręt     0.1725    0.7117    0.2777       111
+      strach     0.4074    0.3438    0.3729      1024
+      radość     0.8450    0.7649    0.8030      1774
+      smutek     0.4716    0.4587    0.4650      1247
+ zaskoczenie     0.7418    0.7052    0.7230       831
+   neutralny     0.5128    0.6326    0.5664      1233
+
+    accuracy                         0.5727      7178
+   macro avg     0.5259    0.5741    0.5236      7178
+weighted avg     0.5963    0.5727    0.5788      7178
+
+Accuracy=0.5727 | F1-macro=0.5236 | inferencja=1.46 ms | parametry=56,951
+
+[dokumentacja] Raport per-klasa zapisany: C:\Users\Kuba\PycharmProjects\wykrywanie_emocji\results\logs\cnn_main_raport_per_klasa.txt
+
+Całkowity czas eksperymentu: 2076.6 s (34.6 min)

@@ -1,0 +1,18 @@
+Raport klasyfikacji per klasa — Uczenie transferowe (efficientnet_b0)
+============================================================
+
+Emocja              F1
+złość           0.5298
+wstręt          0.5135
+strach          0.4025
+radość          0.8118
+smutek          0.4801
+zaskoczenie     0.7244
+neutralny       0.5791
+
+Accuracy:      0.6064
+F1 (macro):    0.5773
+F1 (weighted): 0.6034
+Inferencja:    8.169 ms/próbkę
+Parametry:     3,485,987
+Rozmiar:       16.71 MB

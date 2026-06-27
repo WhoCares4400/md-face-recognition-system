@@ -1,0 +1,23 @@
+Raport klasyfikacji per klasa — Cechy geometryczne+XGB
+============================================================
+
+Emocja              F1
+złość           0.5223
+wstręt          0.4103
+strach          0.3456
+radość          0.8120
+smutek          0.4347
+zaskoczenie     0.7112
+neutralny       0.5221
+
+Accuracy:      0.5852
+F1 (macro):    0.5369
+F1 (weighted): 0.5792
+Inferencja:    0.013 ms/próbkę
+Parametry:     0
+Rozmiar:       13.16 MB
+
+Dodatkowe:
+  classifier: xgb
+  detection_rate_test: 0.9223
+  detection_rate_train: 0.9205
