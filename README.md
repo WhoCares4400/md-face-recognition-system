@@ -2,8 +2,10 @@
 
 Porównawcze studium **czterech podejść sztucznej inteligencji** do rozpoznawania
 emocji z mimiki twarzy, ocenionych w identycznych, kontrolowanych warunkach na
-zbiorze **FER2013**. Repozytorium zawiera kod, potok eksperymentalny oraz wyniki
-(wykresy, metryki) towarzyszące pracy magisterskiej.
+zbiorze **FER2013**. Repozytorium zawiera kod, potok eksperymentalny, wyniki
+(wykresy, metryki), a także **dołączony zbiór danych** (`fer2013/`) oraz
+**wytrenowane wagi modeli** (`checkpoints/`, przez Git LFS) — dzięki czemu program
+można uruchomić od razu po sklonowaniu, bez ponownego treningu.
 
 Wszystkie modele trenowane i testowane są na tym samym podziale danych i tymi samymi
 metrykami, więc różnice w wynikach są przypisywalne wyłącznie podejściu algorytmicznemu.
@@ -41,9 +43,8 @@ mini-Xception. Pełne metryki, macierze pomyłek i krzywe uczenia znajdują się
 zaskoczenie, neutralny), ~28,7 tys. obrazów treningowych i 7178 testowych. Zbiór jest
 silnie niezbalansowany (radość 8989 vs wstręt 547 obrazów łącznie).
 
-Zbiór **nie jest dołączony** do repozytorium. Pobierz go z Kaggle:
-<https://www.kaggle.com/datasets/msambare/fer2013> i rozpakuj do katalogu `fer2013/`
-o następującej strukturze:
+Zbiór jest **dołączony do repozytorium** w katalogu `fer2013/` o następującej
+strukturze (źródło: Kaggle, <https://www.kaggle.com/datasets/msambare/fer2013>):
 
 ```
 fer2013/
@@ -57,6 +58,17 @@ Alternatywnie obsługiwany jest pojedynczy plik `fer2013.csv` (kolumny `emotion`
 `pixels`, `Usage`).
 
 ## Instalacja
+
+Repozytorium używa **Git LFS** do przechowywania wag modeli (`checkpoints/`).
+Zainstaluj Git LFS przed klonowaniem, aby pobrały się pełne pliki wag:
+
+```bash
+git lfs install
+git clone https://github.com/WhoCares4400/md-face-recognition-system.git
+cd md-face-recognition-system
+```
+
+Następnie utwórz środowisko i zainstaluj zależności:
 
 ```bash
 python -m venv .venv
@@ -88,9 +100,11 @@ python train.py --model transfer --data ./fer2013 --backbone efficientnet_b0 --t
 python train.py --model vit --data ./fer2013 --variant lite           --tag main
 python train.py --model vit --data ./fer2013 --variant pretrained      --tag vitb16
 
-# Cechy geometryczne + SVM
+# Cechy geometryczne + SVM (lub --classifier rf / xgb — badanie ablacyjne)
 python train.py --model landmarks --data ./fer2013 --classifier svm --tag main
 ```
+
+> Modele drzewiaste (`rf`, `xgb`) dodatkowo zapisują wykres ważności cech do `results/`.
 
 Każdy trening zapisuje wagi do `checkpoints/`, metryki i wykresy do `results/` oraz
 log z przebiegiem per-epoka do `results/logs/`.
@@ -180,19 +194,26 @@ Najważniejsze opcje wiersza poleceń:
 ├── compare.py           # badania porównawcze wszystkich podejść
 ├── aggregate.py         # agregacja wielu uruchomień (średnia ± odchylenie)
 ├── regen_plots.py       # regeneracja wykresów z plików JSON
+├── regen_feat_imp.py    # regeneracja wykresów ważności cech (modele drzewiaste)
 ├── realtime.py          # rozpoznawanie emocji na żywo z kamery
 ├── models/              # 4 architektury: model1_cnn, model2_transfer, model3_landmarks, model4_vit
 ├── utils/               # dane, pętla treningowa, metryki, wykresy, logger
 ├── results/             # metryki (JSON/CSV), macierze pomyłek, krzywe, wykresy porównawcze
+├── checkpoints/         # wytrenowane wagi modeli (Git LFS)
+├── fer2013/             # zbiór danych FER2013 (train/ + test/)
 ├── requirements.txt
 └── README.md
 ```
 
-> **Uwaga:** katalogi `checkpoints/` (wagi modeli) i `fer2013/` (zbiór danych) nie są
-> wersjonowane ze względu na rozmiar. Wagi odtworzysz treningiem (`train.py`), a zbiór
-> pobierzesz z Kaggle (link powyżej).
+> **Uwaga:** wagi modeli (`checkpoints/`) są przechowywane przez **Git LFS** —
+> do ich pobrania wymagany jest zainstalowany Git LFS (`git lfs install`) przed
+> klonowaniem. Zbiór `fer2013/` jest dołączony bezpośrednio.
 
 ## Środowisko
 
 PyTorch 2.6.0 (CUDA 12.4), Python 3.12, scikit-learn, XGBoost, MediaPipe, OpenCV.
 Pełna lista zależności w `requirements.txt`.
+
+## Uwagi
+
+Kod powstał przy wsparciu narzędzia **Claude Code** (Anthropic).
