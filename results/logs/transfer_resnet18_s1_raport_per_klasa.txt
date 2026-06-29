@@ -1,0 +1,18 @@
+Raport klasyfikacji per klasa — Uczenie transferowe (resnet18)
+============================================================
+
+Emocja              F1
+złość           0.5973
+wstręt          0.6581
+strach          0.5079
+radość          0.8552
+smutek          0.5332
+zaskoczenie     0.7919
+neutralny       0.6329
+
+Accuracy:      0.6644
+F1 (macro):    0.6538
+F1 (weighted): 0.6667
+Inferencja:    2.150 ms/próbkę
+Parametry:     11,152,647
+Rozmiar:       43.18 MB

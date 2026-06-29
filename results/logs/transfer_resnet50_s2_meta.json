@@ -1,0 +1,69 @@
+{
+  "run_name": "transfer_resnet50_s2",
+  "environment": {
+    "data_uruchomienia": "2026-06-29 11:33:16",
+    "system": "Windows-10-10.0.19045-SP0",
+    "python": "3.12.1",
+    "procesor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "torch": "2.6.0+cu124",
+    "cuda_dostepne": true,
+    "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
+    "gpu_pamiec_GB": 8.0,
+    "wersja_torchvision": "0.21.0+cu124",
+    "wersja_sklearn": "1.9.0",
+    "wersja_xgboost": "3.3.0",
+    "wersja_mediapipe": "0.10.35",
+    "wersja_cv2": "4.13.0",
+    "wersja_numpy": "2.5.0"
+  },
+  "args": {
+    "model": "transfer",
+    "data": "./fer2013",
+    "epochs": 60,
+    "batch_size": 64,
+    "lr": 0.001,
+    "tag": "resnet50_s2",
+    "backbone": "resnet50",
+    "variant": "lite",
+    "classifier": "svm",
+    "no_pretrained": false,
+    "seed": 2
+  },
+  "config": {
+    "epochs": 60,
+    "batch_size": 64,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "patience": 10,
+    "val_split": 0.1,
+    "num_workers": 2,
+    "use_class_weights": true,
+    "label_smoothing": 0.05,
+    "mixed_precision": true,
+    "extra": {}
+  },
+  "czas_calkowity_s": 2297.7,
+  "extra": {},
+  "train": {
+    "best_f1_walidacja": 0.6793,
+    "epoki_wykonane": 31
+  },
+  "wynik": {
+    "Model": "Uczenie transferowe (resnet50)",
+    "Dokładność": 0.6856,
+    "F1 (makro)": 0.6826,
+    "F1 (ważone)": 0.6844,
+    "Inferencja [ms]": 4.942,
+    "Parametry": 23809543,
+    "Rozmiar [MB]": 91.89
+  },
+  "per_class_f1": {
+    "złość": 0.6078838174273858,
+    "wstręt": 0.7669902912621359,
+    "strach": 0.5264847512038523,
+    "radość": 0.8689615273358403,
+    "smutek": 0.5529315960912052,
+    "zaskoczenie": 0.793778801843318,
+    "neutralny": 0.6612426035502958
+  }
+}

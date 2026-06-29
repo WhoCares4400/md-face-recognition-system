@@ -1,0 +1,132 @@
+======================================================================
+  EKSPERYMENT: transfer_resnet18_s3
+======================================================================
+Środowisko:
+  data_uruchomienia: 2026-06-29 10:13:51
+  system: Windows-10-10.0.19045-SP0
+  python: 3.12.1
+  procesor: Intel64 Family 6 Model 141 Stepping 1, GenuineIntel
+  torch: 2.6.0+cu124
+  cuda_dostepne: True
+  gpu: NVIDIA GeForce RTX 3070 Laptop GPU
+  gpu_pamiec_GB: 8.0
+  wersja_torchvision: 0.21.0+cu124
+  wersja_sklearn: 1.9.0
+  wersja_xgboost: 3.3.0
+  wersja_mediapipe: 0.10.35
+  wersja_cv2: 4.13.0
+  wersja_numpy: 2.5.0
+
+Argumenty wywołania:
+  --model: transfer
+  --data: ./fer2013
+  --epochs: 60
+  --batch_size: 64
+  --lr: 0.001
+  --tag: resnet18_s3
+  --backbone: resnet18
+  --variant: lite
+  --classifier: svm
+  --no_pretrained: False
+  --seed: 3
+
+Hiperparametry (TrainConfig):
+  epochs: 60
+  batch_size: 64
+  lr: 0.001
+  weight_decay: 0.0001
+  patience: 10
+  val_split: 0.1
+  num_workers: 2
+  use_class_weights: True
+  label_smoothing: 0.05
+  mixed_precision: True
+  extra: {}
+----------------------------------------------------------------------
+Urządzenie: cuda
+Liczności klas (train): [3613, 389, 3676, 6488, 4324, 2849, 4500]
+
+=== ETAP 1: ekstrakcja cech (zamrożony backbone) ===
+[Uczenie transferowe (resnet18) [etap1]] epoka   1/15 | strata_tren=2.0331 strata_wal=1.9119 acc_wal=0.2690 f1_wal=0.2290 | 43.4s
+[Uczenie transferowe (resnet18) [etap1]] epoka   2/15 | strata_tren=1.9515 strata_wal=1.8808 acc_wal=0.3153 f1_wal=0.2742 | 42.9s
+[Uczenie transferowe (resnet18) [etap1]] epoka   3/15 | strata_tren=1.9384 strata_wal=1.8863 acc_wal=0.3408 f1_wal=0.2841 | 42.9s
+[Uczenie transferowe (resnet18) [etap1]] epoka   4/15 | strata_tren=1.9269 strata_wal=1.8693 acc_wal=0.3279 f1_wal=0.2801 | 42.3s
+[Uczenie transferowe (resnet18) [etap1]] epoka   5/15 | strata_tren=1.9236 strata_wal=1.8666 acc_wal=0.3188 f1_wal=0.2661 | 47.1s
+[Uczenie transferowe (resnet18) [etap1]] epoka   6/15 | strata_tren=1.9187 strata_wal=1.8596 acc_wal=0.3282 f1_wal=0.2752 | 43.6s
+[Uczenie transferowe (resnet18) [etap1]] epoka   7/15 | strata_tren=1.9107 strata_wal=1.8509 acc_wal=0.3049 f1_wal=0.2693 | 45.4s
+[Uczenie transferowe (resnet18) [etap1]] epoka   8/15 | strata_tren=1.9097 strata_wal=1.8456 acc_wal=0.3174 f1_wal=0.2798 | 46.3s
+[Uczenie transferowe (resnet18) [etap1]] epoka   9/15 | strata_tren=1.9050 strata_wal=1.8471 acc_wal=0.3296 f1_wal=0.2836 | 45.8s
+[Uczenie transferowe (resnet18) [etap1]] epoka  10/15 | strata_tren=1.8957 strata_wal=1.8428 acc_wal=0.3188 f1_wal=0.2760 | 44.2s
+[Uczenie transferowe (resnet18) [etap1]] epoka  11/15 | strata_tren=1.8972 strata_wal=1.8442 acc_wal=0.3362 f1_wal=0.2949 | 44.2s
+[Uczenie transferowe (resnet18) [etap1]] epoka  12/15 | strata_tren=1.8987 strata_wal=1.8442 acc_wal=0.3491 f1_wal=0.2972 | 45.0s
+[Uczenie transferowe (resnet18) [etap1]] epoka  13/15 | strata_tren=1.8942 strata_wal=1.8391 acc_wal=0.3477 f1_wal=0.2966 | 43.4s
+[Uczenie transferowe (resnet18) [etap1]] epoka  14/15 | strata_tren=1.8911 strata_wal=1.8409 acc_wal=0.3376 f1_wal=0.2911 | 41.6s
+[Uczenie transferowe (resnet18) [etap1]] epoka  15/15 | strata_tren=1.8905 strata_wal=1.8388 acc_wal=0.3404 f1_wal=0.2947 | 41.6s
+
+=== ETAP 2: fine-tuning (odmrożone górne warstwy) ===
+[Uczenie transferowe (resnet18) [etap2]] epoka   1/60 | strata_tren=1.8400 strata_wal=1.6916 acc_wal=0.4233 f1_wal=0.3617 | 41.6s
+[Uczenie transferowe (resnet18) [etap2]] epoka   2/60 | strata_tren=1.6666 strata_wal=1.5186 acc_wal=0.5125 f1_wal=0.4596 | 41.6s
+[Uczenie transferowe (resnet18) [etap2]] epoka   3/60 | strata_tren=1.5317 strata_wal=1.4081 acc_wal=0.5564 f1_wal=0.4984 | 42.6s
+[Uczenie transferowe (resnet18) [etap2]] epoka   4/60 | strata_tren=1.4481 strata_wal=1.3661 acc_wal=0.5784 f1_wal=0.5234 | 43.6s
+[Uczenie transferowe (resnet18) [etap2]] epoka   5/60 | strata_tren=1.3829 strata_wal=1.3140 acc_wal=0.5990 f1_wal=0.5561 | 43.5s
+[Uczenie transferowe (resnet18) [etap2]] epoka   6/60 | strata_tren=1.3393 strata_wal=1.2775 acc_wal=0.6164 f1_wal=0.5820 | 42.5s
+[Uczenie transferowe (resnet18) [etap2]] epoka   7/60 | strata_tren=1.2916 strata_wal=1.2468 acc_wal=0.6307 f1_wal=0.5877 | 43.1s
+[Uczenie transferowe (resnet18) [etap2]] epoka   8/60 | strata_tren=1.2600 strata_wal=1.2757 acc_wal=0.6216 f1_wal=0.5843 | 42.1s
+[Uczenie transferowe (resnet18) [etap2]] epoka   9/60 | strata_tren=1.2364 strata_wal=1.2373 acc_wal=0.6300 f1_wal=0.6033 | 42.6s
+[Uczenie transferowe (resnet18) [etap2]] epoka  10/60 | strata_tren=1.1982 strata_wal=1.2621 acc_wal=0.6310 f1_wal=0.5943 | 42.1s
+[Uczenie transferowe (resnet18) [etap2]] epoka  11/60 | strata_tren=1.1757 strata_wal=1.2424 acc_wal=0.6362 f1_wal=0.6045 | 46.3s
+[Uczenie transferowe (resnet18) [etap2]] epoka  12/60 | strata_tren=1.1471 strata_wal=1.2434 acc_wal=0.6436 f1_wal=0.6064 | 45.8s
+[Uczenie transferowe (resnet18) [etap2]] epoka  13/60 | strata_tren=1.1199 strata_wal=1.2257 acc_wal=0.6557 f1_wal=0.6343 | 46.1s
+[Uczenie transferowe (resnet18) [etap2]] epoka  14/60 | strata_tren=1.1074 strata_wal=1.2443 acc_wal=0.6456 f1_wal=0.6216 | 46.4s
+[Uczenie transferowe (resnet18) [etap2]] epoka  15/60 | strata_tren=1.0792 strata_wal=1.2376 acc_wal=0.6498 f1_wal=0.6280 | 45.8s
+[Uczenie transferowe (resnet18) [etap2]] epoka  16/60 | strata_tren=1.0455 strata_wal=1.2144 acc_wal=0.6519 f1_wal=0.6360 | 46.4s
+[Uczenie transferowe (resnet18) [etap2]] epoka  17/60 | strata_tren=1.0182 strata_wal=1.2147 acc_wal=0.6523 f1_wal=0.6276 | 45.8s
+[Uczenie transferowe (resnet18) [etap2]] epoka  18/60 | strata_tren=0.9945 strata_wal=1.2191 acc_wal=0.6575 f1_wal=0.6423 | 46.0s
+[Uczenie transferowe (resnet18) [etap2]] epoka  19/60 | strata_tren=0.9785 strata_wal=1.2258 acc_wal=0.6627 f1_wal=0.6590 | 45.2s
+[Uczenie transferowe (resnet18) [etap2]] epoka  20/60 | strata_tren=0.9517 strata_wal=1.2829 acc_wal=0.6512 f1_wal=0.6410 | 44.4s
+[Uczenie transferowe (resnet18) [etap2]] epoka  21/60 | strata_tren=0.9306 strata_wal=1.2750 acc_wal=0.6679 f1_wal=0.6474 | 47.8s
+[Uczenie transferowe (resnet18) [etap2]] epoka  22/60 | strata_tren=0.9042 strata_wal=1.2758 acc_wal=0.6679 f1_wal=0.6513 | 44.4s
+[Uczenie transferowe (resnet18) [etap2]] epoka  23/60 | strata_tren=0.8787 strata_wal=1.3024 acc_wal=0.6589 f1_wal=0.6547 | 43.1s
+[Uczenie transferowe (resnet18) [etap2]] epoka  24/60 | strata_tren=0.8580 strata_wal=1.2910 acc_wal=0.6596 f1_wal=0.6569 | 43.3s
+[Uczenie transferowe (resnet18) [etap2]] epoka  25/60 | strata_tren=0.8401 strata_wal=1.2921 acc_wal=0.6599 f1_wal=0.6490 | 42.8s
+[Uczenie transferowe (resnet18) [etap2]] epoka  26/60 | strata_tren=0.8168 strata_wal=1.2926 acc_wal=0.6714 f1_wal=0.6638 | 43.2s
+[Uczenie transferowe (resnet18) [etap2]] epoka  27/60 | strata_tren=0.8078 strata_wal=1.3245 acc_wal=0.6659 f1_wal=0.6632 | 42.8s
+[Uczenie transferowe (resnet18) [etap2]] epoka  28/60 | strata_tren=0.7782 strata_wal=1.3374 acc_wal=0.6655 f1_wal=0.6555 | 44.8s
+[Uczenie transferowe (resnet18) [etap2]] epoka  29/60 | strata_tren=0.7668 strata_wal=1.3432 acc_wal=0.6613 f1_wal=0.6529 | 46.0s
+[Uczenie transferowe (resnet18) [etap2]] epoka  30/60 | strata_tren=0.7494 strata_wal=1.3701 acc_wal=0.6652 f1_wal=0.6612 | 45.7s
+[Uczenie transferowe (resnet18) [etap2]] epoka  31/60 | strata_tren=0.7411 strata_wal=1.3573 acc_wal=0.6645 f1_wal=0.6646 | 46.0s
+[Uczenie transferowe (resnet18) [etap2]] epoka  32/60 | strata_tren=0.7185 strata_wal=1.3671 acc_wal=0.6624 f1_wal=0.6626 | 46.4s
+[Uczenie transferowe (resnet18) [etap2]] epoka  33/60 | strata_tren=0.7101 strata_wal=1.3578 acc_wal=0.6732 f1_wal=0.6694 | 46.2s
+[Uczenie transferowe (resnet18) [etap2]] epoka  34/60 | strata_tren=0.6982 strata_wal=1.3602 acc_wal=0.6686 f1_wal=0.6740 | 46.1s
+[Uczenie transferowe (resnet18) [etap2]] epoka  35/60 | strata_tren=0.6835 strata_wal=1.3681 acc_wal=0.6718 f1_wal=0.6703 | 46.0s
+[Uczenie transferowe (resnet18) [etap2]] epoka  36/60 | strata_tren=0.6702 strata_wal=1.3932 acc_wal=0.6659 f1_wal=0.6695 | 45.9s
+[Uczenie transferowe (resnet18) [etap2]] epoka  37/60 | strata_tren=0.6629 strata_wal=1.4109 acc_wal=0.6603 f1_wal=0.6610 | 46.3s
+[Uczenie transferowe (resnet18) [etap2]] epoka  38/60 | strata_tren=0.6617 strata_wal=1.3866 acc_wal=0.6707 f1_wal=0.6648 | 44.4s
+[Uczenie transferowe (resnet18) [etap2]] epoka  39/60 | strata_tren=0.6427 strata_wal=1.3968 acc_wal=0.6676 f1_wal=0.6647 | 42.4s
+[Uczenie transferowe (resnet18) [etap2]] epoka  40/60 | strata_tren=0.6404 strata_wal=1.4085 acc_wal=0.6578 f1_wal=0.6540 | 42.8s
+[Uczenie transferowe (resnet18) [etap2]] epoka  41/60 | strata_tren=0.6324 strata_wal=1.4100 acc_wal=0.6620 f1_wal=0.6585 | 42.3s
+[Uczenie transferowe (resnet18) [etap2]] epoka  42/60 | strata_tren=0.6217 strata_wal=1.4036 acc_wal=0.6700 f1_wal=0.6627 | 42.5s
+[Uczenie transferowe (resnet18) [etap2]] epoka  43/60 | strata_tren=0.6143 strata_wal=1.4150 acc_wal=0.6652 f1_wal=0.6606 | 42.9s
+[Uczenie transferowe (resnet18) [etap2]] epoka  44/60 | strata_tren=0.6155 strata_wal=1.3943 acc_wal=0.6666 f1_wal=0.6624 | 45.5s
+[Uczenie transferowe (resnet18) [etap2]] early stopping po 44 epokach.
+
+=== EWALUACJA (zbiór testowy) ===
+              precision    recall  f1-score   support
+
+       złość     0.5586    0.6221    0.5886       958
+      wstręt     0.6981    0.6667    0.6820       111
+      strach     0.5382    0.5371    0.5376      1024
+      radość     0.8933    0.8546    0.8735      1774
+      smutek     0.5856    0.4940    0.5359      1247
+ zaskoczenie     0.7831    0.8123    0.7974       831
+   neutralny     0.6232    0.6934    0.6564      1233
+
+    accuracy                         0.6801      7178
+   macro avg     0.6686    0.6686    0.6674      7178
+weighted avg     0.6823    0.6801    0.6799      7178
+
+Accuracy=0.6801 | F1-macro=0.6674 | inferencja=2.14 ms | parametry=11,152,647
+
+[dokumentacja] Raport per-klasa zapisany: C:\Users\Kuba\PycharmProjects\wykrywanie_emocji\results\logs\transfer_resnet18_s3_raport_per_klasa.txt
+
+Całkowity czas eksperymentu: 2639.1 s (44.0 min)
