@@ -260,6 +260,34 @@ select#model-select {
 .note li strong { color: var(--fg); }
 .note-small { font-size: .82rem !important; }
 
+/* ---------- Sekcja pracy dyplomowej ---------- */
+.thesis { text-align: center; position: relative; overflow: hidden; }
+.thesis::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+.thesis-logo {
+  margin: 0 auto 14px;
+  max-width: 420px;             /* logo z przezroczystym tłem — turkus czytelny w obu motywach */
+}
+.thesis-logo img { width: 100%; height: auto; display: block; }
+.thesis-intro { margin: 0 0 4px; color: var(--fg-dim); font-size: .9rem; }
+.thesis-title { margin: 0 0 14px; font-weight: 700; font-size: 1rem; }
+.thesis-meta { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.thesis-meta > div {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: .9rem;
+}
+.thesis-meta dt { color: var(--fg-dim); margin: 0; }
+.thesis-meta dt::after { content: ":"; }
+.thesis-meta dd { margin: 0; font-weight: 600; }
+
 /* ---------- Stopka ---------- */
 .app-footer { text-align: center; margin-top: 18px; }
 .app-footer p { font-size: .75rem; color: var(--fg-dim); margin: 0; }
