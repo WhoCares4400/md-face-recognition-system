@@ -63,6 +63,7 @@ const state = {
   paused: false,                 // "Zatrzymaj" — zamrożona klatka do podglądu wyników
   emaAlpha: 0.6,                 // waga nowej klatki w wygładzaniu (1 = brak wygładzania)
   emaProbs: null,
+  lastFrame: null,               // { srcW, srcH, box, probs } — do przerysowania przy resize/fullscreen
   videoTs: 0,
   busy: false,
 };
@@ -315,7 +316,8 @@ async function analyze(source, w, h, smooth) {
       if (smooth) probs = applyEma(probs);
       renderResults(probs);
     }
-    drawOverlay(w, h, box, probs);
+    state.lastFrame = { srcW: w, srcH: h, box, probs };
+    drawOverlay();
   } catch (e) {
     // pojedynczy błąd klatki nie przerywa pętli
     console.error(e);
@@ -472,41 +474,71 @@ function landmarkBox(px, py, w, h) {
 
 const overlayCtx = el.overlay.getContext("2d");
 
-function drawOverlay(w, h, box, probs) {
-  if (el.overlay.width !== w || el.overlay.height !== h) {
-    el.overlay.width = w; el.overlay.height = h;
+// Dopasowuje bufor canvasa do rzeczywistego rozmiaru kontenera (z uwzględnieniem DPR).
+function sizeOverlay() {
+  const rect = el.stage.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const cw = Math.max(1, Math.round(rect.width));
+  const ch = Math.max(1, Math.round(rect.height));
+  const bw = Math.round(cw * dpr), bh = Math.round(ch * dpr);
+  if (el.overlay.width !== bw || el.overlay.height !== bh) {
+    el.overlay.width = bw; el.overlay.height = bh;
   }
+  return { cw, ch, dpr };
+}
+
+// Mapowanie współrzędnych źródła (klatka/zdjęcie) na wyświetlanie przy object-fit: cover.
+function coverMap(srcW, srcH, cw, ch) {
+  const scale = Math.max(cw / srcW, ch / srcH);
+  return { scale, offX: (cw - srcW * scale) / 2, offY: (ch - srcH * scale) / 2 };
+}
+
+// Rysuje nakładkę z ostatniej analizy (state.lastFrame). Wołana po każdej klatce oraz
+// przy zmianie rozmiaru kontenera / pełnym ekranie — dzięki temu pozycje się dopasowują.
+function drawOverlay() {
   const ctx = overlayCtx;
-  ctx.clearRect(0, 0, w, h);
-  if (!box || !probs) {
-    if (state.current && state.current.type === "landmarks" && !box) drawNoFace(ctx, w, h);
+  const { cw, ch, dpr } = sizeOverlay();
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);   // rysujemy w pikselach CSS
+  ctx.clearRect(0, 0, cw, ch);
+
+  const f = state.lastFrame;
+  if (!f) return;
+  const { srcW, srcH, box, probs } = f;
+  if (!box || !probs || !srcW || !srcH) {
+    if (state.current && state.current.type === "landmarks" && !box) drawNoFace(ctx, cw, ch);
     return;
   }
-  const u = Math.min(w, h) / 480;               // współczynnik skali (obraz -> ekran)
+
+  const u = Math.min(cw, ch) / 480;
   const top = argmax(probs);
   const color = EMOTION_COLORS[state.classes[top]] || "#6c8cff";
 
-  // ramka twarzy (lustro dla przedniej kamery, aby pokrywała się z obrazem)
+  // ramka twarzy: współrzędne źródła -> ekran (cover), z lustrem dla przedniej kamery
+  const { scale, offX, offY } = coverMap(srcW, srcH, cw, ch);
   const mir = state.source === "camera" && state.facing === "user";
-  const bx = mir ? (w - box.x - box.w) : box.x;
+  const xContent = mir ? (srcW - box.x - box.w) : box.x;
+  const dx = offX + xContent * scale, dy = offY + box.y * scale;
+  const dw = box.w * scale, dh = box.h * scale;
+
   ctx.lineWidth = Math.max(2, 3 * u);
   ctx.strokeStyle = color;
-  ctx.strokeRect(bx, box.y, box.w, box.h);
+  ctx.strokeRect(dx, dy, dw, dh);
 
-  // etykieta nad ramką: "<emocja> NN%"
+  // etykieta nad ramką: "<emocja> NN%" (przycięta do kadru)
   const labelTxt = `${state.classesPl[top]} ${Math.round(probs[top] * 100)}%`;
   const lf = Math.round(20 * u);
   ctx.font = `700 ${lf}px system-ui, sans-serif`;
   const padX = 8 * u, padY = 5 * u;
   const lw = ctx.measureText(labelTxt).width + 2 * padX, lh = lf + 2 * padY;
-  const ly = box.y - lh >= 0 ? box.y - lh : box.y;
+  const lx = Math.max(0, Math.min(dx, cw - lw));
+  const ly = dy - lh >= 0 ? dy - lh : dy;
   ctx.fillStyle = color;
-  roundRect(ctx, bx, ly, lw, lh, 6 * u); ctx.fill();
+  roundRect(ctx, lx, ly, lw, lh, 6 * u); ctx.fill();
   ctx.fillStyle = contrastColor(color);
   ctx.textBaseline = "middle"; ctx.textAlign = "left";
-  ctx.fillText(labelTxt, bx + padX, ly + lh / 2);
+  ctx.fillText(labelTxt, lx + padX, ly + lh / 2);
 
-  drawBarsPanel(ctx, w, u, probs, top);
+  drawBarsPanel(ctx, cw, u, probs, top);
 }
 
 // Panel słupków wszystkich klas (prawy górny róg) — odpowiednik draw_overlay z realtime.py
@@ -516,7 +548,7 @@ function drawBarsPanel(ctx, w, u, probs, top) {
   const labelW = 84 * u, pctW = 40 * u, barW = Math.min(w * 0.24, 150 * u);
   const panelW = labelW + barW + pctW + pad * 2;
   const panelH = probs.length * rowH + pad * 2;
-  const x0 = w - panelW - pad, y0 = pad;
+  const x0 = Math.max(pad, w - panelW - pad), y0 = pad;
 
   ctx.fillStyle = "rgba(10,12,22,0.55)";
   roundRect(ctx, x0, y0, panelW, panelH, 10 * u); ctx.fill();
@@ -637,7 +669,12 @@ function bindControls() {
   el.btnFsExit.addEventListener("click", exitFullscreen);
   document.addEventListener("fullscreenchange", () => {
     if (!document.fullscreenElement) el.stage.classList.remove("pseudo-fs");
+    drawOverlay();
   });
+
+  // Nakładka dopasowuje się do rozmiaru kontenera (fullscreen, resize okna, obrót telefonu).
+  if (window.ResizeObserver) new ResizeObserver(() => drawOverlay()).observe(el.stage);
+  window.addEventListener("orientationchange", () => setTimeout(drawOverlay, 200));
 
   // Regulacja wygładzania predykcji (suwak): 0 = brak, 100 = maksymalne.
   const applySmooth = () => {

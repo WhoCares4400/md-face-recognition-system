@@ -179,8 +179,7 @@ select#model-select {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;   /* zgodnie z video/img — ramka twarzy pokrywa się z obrazem */
-  pointer-events: none;
+  pointer-events: none;   /* bufor canvasa dopasowywany w JS do rozmiaru kontenera (z DPR) */
 }
 .stage-hint {
   position: absolute;
