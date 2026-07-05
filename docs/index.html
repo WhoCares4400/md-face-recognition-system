@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1220">
+  <title>Rozpoznawanie emocji — demo na żywo</title>
+  <meta name="description" content="Demo na żywo: rozpoznawanie emocji z twarzy w przeglądarce (FER2013, modele ONNX).">
+  <link rel="stylesheet" href="style.css">
+  <!-- ONNX Runtime Web (inferencja w przeglądarce, WASM) -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <h1>Rozpoznawanie emocji <span class="badge">na żywo</span></h1>
+    <p class="subtitle">
+      Pretrenowane modele (FER2013) uruchamiane <strong>w Twojej przeglądarce</strong> — obraz
+      nie opuszcza urządzenia. Wybierz model i pokaż twarz kamerze lub wgraj zdjęcie.
+    </p>
+  </header>
+
+  <main>
+    <!-- Wybór modelu -->
+    <section class="card" id="model-card">
+      <label for="model-select" class="field-label">Model</label>
+      <select id="model-select" aria-label="Wybór modelu"></select>
+      <div class="model-meta" id="model-meta"></div>
+      <div class="progress" id="load-progress" hidden>
+        <div class="progress-bar" id="load-progress-bar"></div>
+        <span class="progress-text" id="load-progress-text"></span>
+      </div>
+    </section>
+
+    <!-- Źródło obrazu -->
+    <section class="card">
+      <div class="source-toggle" role="tablist" aria-label="Źródło obrazu">
+        <button id="tab-camera" class="toggle-btn active" role="tab" aria-selected="true">📷 Kamera</button>
+        <button id="tab-upload" class="toggle-btn" role="tab" aria-selected="false">🖼️ Zdjęcie</button>
+      </div>
+
+      <div class="stage">
+        <video id="video" playsinline muted autoplay></video>
+        <img id="photo" alt="Wgrane zdjęcie" hidden>
+        <canvas id="overlay"></canvas>
+        <div class="stage-hint" id="stage-hint">Zezwól na dostęp do kamery…</div>
+      </div>
+
+      <div class="controls" id="camera-controls">
+        <button id="btn-flip" class="ctrl-btn" title="Przełącz kamerę">🔄 Przód / tył</button>
+        <button id="btn-camera-toggle" class="ctrl-btn">⏸ Zatrzymaj</button>
+      </div>
+      <div class="controls" id="upload-controls" hidden>
+        <label class="ctrl-btn file-btn">
+          📁 Wybierz zdjęcie
+          <input type="file" id="file-input" accept="image/*" hidden>
+        </label>
+      </div>
+    </section>
+
+    <!-- Wyniki -->
+    <section class="card results-card">
+      <div class="dominant" id="dominant">
+        <span class="dominant-label" id="dominant-label">—</span>
+        <span class="dominant-pct" id="dominant-pct"></span>
+      </div>
+      <div class="bars" id="bars"></div>
+      <div class="infer-time" id="infer-time"></div>
+    </section>
+
+    <!-- Notka o pominiętych modelach -->
+    <section class="card note" id="excluded-note">
+      <h2>ℹ️ Uwaga o dostępnych modelach</h2>
+      <p id="excluded-text">
+        Dwa najcięższe modele z badania zostały <strong>celowo pominięte w wersji webowej</strong>,
+        ponieważ pobieranie ich w przeglądarce trwałoby zbyt długo (zwłaszcza na telefonie):
+      </p>
+      <ul id="excluded-list"></ul>
+      <p class="note-small">
+        Wszystkie modele są dostępne w repozytorium projektu (checkpointy) i w pracy.
+        Modele „landmarkowe" (SVM/XGBoost) używają siatki twarzy MediaPipe — ich wyniki
+        w przeglądarce mogą się nieznacznie różnić od wersji desktopowej.
+      </p>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      Inferencja: ONNX Runtime Web · Detekcja twarzy: MediaPipe ·
+      Klasy: złość, wstręt, strach, radość, smutek, zaskoczenie, neutralny (FER2013).
+    </p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

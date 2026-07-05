@@ -185,11 +185,57 @@ Najważniejsze opcje wiersza poleceń:
 | `--mirror` / `--no-mirror` | wł. | Lustrzane odbicie obrazu kamery. |
 | `--camera` | `0` | Indeks kamery. |
 
+## Demo webowe na żywo (GitHub Pages)
+
+Interaktywne demo działające **w przeglądarce** (również na telefonie) — bez instalacji,
+bez serwera. Modele uruchamiane są po stronie klienta przez **ONNX Runtime Web** (WASM),
+a twarz wykrywa **MediaPipe**. Obraz nie opuszcza urządzenia. Kod strony znajduje się
+w katalogu [`docs/`](docs/).
+
+**Adres (po włączeniu Pages):** `https://whocares4400.github.io/md-face-recognition-system/`
+
+### Jak to działa
+
+GitHub Pages serwuje wyłącznie pliki statyczne, więc checkpointy PyTorch są najpierw
+eksportowane do formatu **ONNX**:
+
+```bash
+pip install -r requirements-export.txt
+python export_onnx.py          # zapisuje docs/models/*.onnx + docs/models/models.json
+```
+
+Skrypt eksportuje 6 sieci (CNN, ViT-Lite, MobileNetV2, EfficientNet-B0, ResNet18, ResNet50)
+oraz 2 modele landmarkowe (SVM, XGBoost), waliduje zgodność ONNX vs PyTorch i generuje
+manifest `models.json` (steruje listą modeli na stronie).
+
+> **Świadomie pominięte w wersji webowej:** **ViT-B/16** (~343 MB) i **Landmarki + RandomForest**
+> (~430 MB) — ich pobieranie w przeglądarce trwałoby zbyt długo (informacja jest też widoczna
+> na samej stronie). Oba modele pozostają dostępne w `checkpoints/` do użytku lokalnego
+> (`realtime.py`).
+
+### Test lokalny
+
+```bash
+cd docs
+python -m http.server 8000
+# otwórz http://localhost:8000
+```
+
+### Publikacja na GitHub Pages
+
+1. Zatwierdź i wypchnij katalog `docs/` (pliki `*.onnx` są **poza Git LFS**, bo Pages nie
+   serwuje treści LFS — commitowane są bezpośrednio).
+2. W repozytorium: **Settings → Pages → Build and deployment → Deploy from a branch**,
+   wybierz gałąź `main` i katalog `/docs`, zapisz.
+3. Po chwili strona będzie dostępna pod adresem podanym wyżej.
+
 ## Struktura repozytorium
 
 ```
 .
 ├── config.py            # wspólna konfiguracja (klasy, ścieżki, hiperparametry, ziarno)
+├── export_onnx.py       # eksport wag -> ONNX dla dema webowego (docs/)
+├── docs/                # demo webowe (GitHub Pages): index.html, app.js, style.css, models/
 ├── train.py             # trening pojedynczego modelu (cnn / transfer / vit / landmarks)
 ├── compare.py           # badania porównawcze wszystkich podejść
 ├── aggregate.py         # agregacja wielu uruchomień (średnia ± odchylenie)

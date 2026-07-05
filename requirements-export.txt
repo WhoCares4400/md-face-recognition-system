@@ -1,0 +1,6 @@
+# Zależności wyłącznie do eksportu wag -> ONNX (python export_onnx.py).
+# Nie są potrzebne do treningu ani do samego dema webowego.
+onnx>=1.16
+onnxruntime>=1.18
+skl2onnx>=1.17
+onnxmltools>=1.12

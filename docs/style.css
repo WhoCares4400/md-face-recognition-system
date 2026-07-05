@@ -1,0 +1,257 @@
+/* ------------------------------------------------------------------ *
+ * Demo rozpoznawania emocji — style (mobile-first, light/dark)
+ * ------------------------------------------------------------------ */
+:root {
+  --bg: #0f1220;
+  --bg-card: #191d2e;
+  --bg-elev: #232840;
+  --fg: #eef1f9;
+  --fg-dim: #a7adc4;
+  --accent: #6c8cff;
+  --accent-2: #9a6cff;
+  --border: #2c3350;
+  --shadow: 0 6px 24px rgba(0, 0, 0, .35);
+  --radius: 16px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f6fb;
+    --bg-card: #ffffff;
+    --bg-elev: #eef1f8;
+    --fg: #1a1e2c;
+    --fg-dim: #5b6178;
+    --accent: #3a5bd9;
+    --accent-2: #7a44d0;
+    --border: #dde2ef;
+    --shadow: 0 6px 20px rgba(30, 40, 90, .10);
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px 14px calc(28px + env(safe-area-inset-bottom));
+}
+
+/* ---------- Nagłówek ---------- */
+.app-header { text-align: center; padding: 8px 4px 4px; }
+.app-header h1 {
+  font-size: 1.5rem;
+  margin: 0 0 6px;
+  letter-spacing: -.01em;
+}
+.badge {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: .62em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-left: 4px;
+}
+.subtitle { color: var(--fg-dim); font-size: .92rem; margin: 0 auto; max-width: 52ch; }
+
+/* ---------- Karty ---------- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  margin-top: 14px;
+}
+
+.field-label {
+  display: block;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--fg-dim);
+  margin-bottom: 6px;
+}
+
+select#model-select {
+  width: 100%;
+  font-size: 1rem;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--fg);
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.model-meta { margin-top: 8px; font-size: .85rem; color: var(--fg-dim); min-height: 1.2em; }
+.model-meta strong { color: var(--fg); }
+
+/* ---------- Pasek pobierania ---------- */
+.progress {
+  margin-top: 10px;
+  height: 22px;
+  background: var(--bg-elev);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border);
+}
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width .15s ease;
+}
+.progress-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--fg);
+  mix-blend-mode: normal;
+}
+
+/* ---------- Przełącznik źródła ---------- */
+.source-toggle {
+  display: flex;
+  gap: 6px;
+  background: var(--bg-elev);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 12px;
+}
+.toggle-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--fg-dim);
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.toggle-btn.active { background: var(--bg-card); color: var(--fg); box-shadow: var(--shadow); }
+
+/* ---------- Scena (kamera / zdjęcie + nakładka) ---------- */
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage video, .stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.stage #overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* zgodnie z video/img — ramka twarzy pokrywa się z obrazem */
+  pointer-events: none;
+}
+.stage-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  color: #dfe3f5;
+  background: rgba(0, 0, 0, .45);
+  font-size: .95rem;
+}
+.stage-hint[hidden] { display: none; }
+
+/* ---------- Przyciski sterowania ---------- */
+.controls { display: flex; gap: 10px; margin-top: 12px; }
+.ctrl-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--fg);
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+.ctrl-btn:active { transform: scale(.98); }
+.file-btn { display: inline-flex; align-items: center; justify-content: center; }
+
+/* ---------- Wyniki ---------- */
+.results-card { padding-top: 18px; }
+.dominant {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.dominant-label { font-size: 1.7rem; font-weight: 800; letter-spacing: -.01em; }
+.dominant-pct { font-size: 1.1rem; color: var(--fg-dim); font-weight: 600; }
+
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.bar-row { display: grid; grid-template-columns: 96px 1fr 44px; align-items: center; gap: 8px; }
+.bar-name { font-size: .85rem; color: var(--fg-dim); text-align: right; }
+.bar-track {
+  height: 16px;
+  background: var(--bg-elev);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar-fill { height: 100%; width: 0; border-radius: 999px; transition: width .12s ease; }
+.bar-pct { font-size: .8rem; font-variant-numeric: tabular-nums; text-align: right; color: var(--fg-dim); }
+.bar-row.top .bar-name, .bar-row.top .bar-pct { color: var(--fg); font-weight: 700; }
+
+.infer-time { margin-top: 12px; font-size: .78rem; color: var(--fg-dim); text-align: center; min-height: 1em; }
+
+/* ---------- Notka ---------- */
+.note h2 { font-size: 1rem; margin: 0 0 8px; }
+.note p { font-size: .9rem; color: var(--fg-dim); margin: 0 0 8px; }
+.note ul { margin: 8px 0; padding-left: 20px; }
+.note li { font-size: .9rem; margin-bottom: 4px; }
+.note li strong { color: var(--fg); }
+.note-small { font-size: .82rem !important; }
+
+/* ---------- Stopka ---------- */
+.app-footer { text-align: center; margin-top: 18px; }
+.app-footer p { font-size: .75rem; color: var(--fg-dim); margin: 0; }
+
+/* ---------- Większe ekrany ---------- */
+@media (min-width: 620px) {
+  .app-header h1 { font-size: 1.85rem; }
+  .stage { aspect-ratio: 16 / 10; }
+}
