@@ -172,6 +172,8 @@ select#model-select {
   object-fit: cover;
   display: block;
 }
+/* atrybut hidden musi wygrać z regułą display:block powyżej */
+.stage video[hidden], .stage img[hidden] { display: none; }
 .stage #overlay {
   position: absolute;
   inset: 0;
@@ -195,7 +197,7 @@ select#model-select {
 .stage-hint[hidden] { display: none; }
 
 /* ---------- Przyciski sterowania ---------- */
-.controls { display: flex; gap: 10px; margin-top: 12px; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
 .ctrl-btn {
   flex: 1;
   padding: 12px;
@@ -223,6 +225,18 @@ select#model-select {
 .dominant-label { font-size: 1.7rem; font-weight: 800; letter-spacing: -.01em; }
 .dominant-pct { font-size: 1.1rem; color: var(--fg-dim); font-weight: 600; }
 
+.smooth-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: .82rem;
+  color: var(--fg-dim);
+}
+.smooth-ctrl label { white-space: nowrap; }
+.smooth-ctrl input[type="range"] { flex: 1; accent-color: var(--accent); min-width: 0; }
+.smooth-val { font-variant-numeric: tabular-nums; min-width: 3ch; text-align: right; }
+
 .bars { display: flex; flex-direction: column; gap: 8px; }
 .bar-row { display: grid; grid-template-columns: 96px 1fr 44px; align-items: center; gap: 8px; }
 .bar-name { font-size: .85rem; color: var(--fg-dim); text-align: right; }
@@ -232,7 +246,7 @@ select#model-select {
   border-radius: 999px;
   overflow: hidden;
 }
-.bar-fill { height: 100%; width: 0; border-radius: 999px; transition: width .12s ease; }
+.bar-fill { display: block; height: 100%; width: 0; border-radius: 999px; transition: width .12s ease; }
 .bar-pct { font-size: .8rem; font-variant-numeric: tabular-nums; text-align: right; color: var(--fg-dim); }
 .bar-row.top .bar-name, .bar-row.top .bar-pct { color: var(--fg); font-weight: 700; }
 
@@ -249,6 +263,45 @@ select#model-select {
 /* ---------- Stopka ---------- */
 .app-footer { text-align: center; margin-top: 18px; }
 .app-footer p { font-size: .75rem; color: var(--fg-dim); margin: 0; }
+
+/* ---------- Lustro przedniej kamery ---------- */
+video.mirror { transform: scaleX(-1); }
+
+/* ---------- Tryb pełnoekranowy (pseudo-fullscreen, działa też na iOS) ---------- */
+.stage.pseudo-fs {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  aspect-ratio: auto;
+  z-index: 9999;
+  border-radius: 0;
+  background: #000;
+}
+.fs-controls { display: none; }
+.stage.pseudo-fs .fs-controls {
+  display: flex;
+  gap: 10px;
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  right: calc(12px + env(safe-area-inset-right));
+  z-index: 10000;
+}
+.fs-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, .5);
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+.fs-btn:active { transform: scale(.95); }
 
 /* ---------- Większe ekrany ---------- */
 @media (min-width: 620px) {

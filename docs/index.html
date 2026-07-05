@@ -38,15 +38,20 @@
         <button id="tab-upload" class="toggle-btn" role="tab" aria-selected="false">🖼️ Zdjęcie</button>
       </div>
 
-      <div class="stage">
+      <div class="stage" id="stage">
         <video id="video" playsinline muted autoplay></video>
         <img id="photo" alt="Wgrane zdjęcie" hidden>
         <canvas id="overlay"></canvas>
         <div class="stage-hint" id="stage-hint">Zezwól na dostęp do kamery…</div>
+        <div class="fs-controls" id="fs-controls">
+          <button id="btn-fs-flip" class="fs-btn" title="Przełącz kamerę">🔄</button>
+          <button id="btn-fs-exit" class="fs-btn" title="Zamknij pełny ekran">✕</button>
+        </div>
       </div>
 
       <div class="controls" id="camera-controls">
         <button id="btn-flip" class="ctrl-btn" title="Przełącz kamerę">🔄 Przód / tył</button>
+        <button id="btn-fullscreen" class="ctrl-btn">⛶ Pełny ekran</button>
         <button id="btn-camera-toggle" class="ctrl-btn">⏸ Zatrzymaj</button>
       </div>
       <div class="controls" id="upload-controls" hidden>
@@ -62,6 +67,11 @@
       <div class="dominant" id="dominant">
         <span class="dominant-label" id="dominant-label">—</span>
         <span class="dominant-pct" id="dominant-pct"></span>
+      </div>
+      <div class="smooth-ctrl">
+        <label for="smooth-range">Wygładzanie</label>
+        <input type="range" id="smooth-range" min="0" max="100" value="40" aria-label="Siła wygładzania predykcji">
+        <span class="smooth-val" id="smooth-val">40%</span>
       </div>
       <div class="bars" id="bars"></div>
       <div class="infer-time" id="infer-time"></div>

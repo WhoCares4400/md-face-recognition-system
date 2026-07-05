@@ -42,7 +42,6 @@ const IDX = {
   chin: 152, left_cheek: 50, right_cheek: 280,
 };
 
-const EMA_ALPHA = 0.6;          // wygładzanie między klatkami (odpowiednik SmoothTracker)
 const FRAME_INTERVAL_MS = 140;  // throttling pętli kamery
 
 // --------------------------------------------------------------------- //
@@ -61,6 +60,8 @@ const state = {
   facing: "user",
   source: "camera",              // "camera" | "upload"
   running: false,
+  paused: false,                 // "Zatrzymaj" — zamrożona klatka do podglądu wyników
+  emaAlpha: 0.6,                 // waga nowej klatki w wygładzaniu (1 = brak wygładzania)
   emaProbs: null,
   videoTs: 0,
   busy: false,
@@ -71,10 +72,12 @@ const $ = (id) => document.getElementById(id);
 const el = {
   select: $("model-select"), meta: $("model-meta"),
   progress: $("load-progress"), progressBar: $("load-progress-bar"), progressText: $("load-progress-text"),
-  video: $("video"), photo: $("photo"), overlay: $("overlay"), hint: $("stage-hint"),
+  stage: $("stage"), video: $("video"), photo: $("photo"), overlay: $("overlay"), hint: $("stage-hint"),
   tabCamera: $("tab-camera"), tabUpload: $("tab-upload"),
   cameraControls: $("camera-controls"), uploadControls: $("upload-controls"),
-  btnFlip: $("btn-flip"), btnCamToggle: $("btn-camera-toggle"), fileInput: $("file-input"),
+  btnFlip: $("btn-flip"), btnFullscreen: $("btn-fullscreen"), btnCamToggle: $("btn-camera-toggle"),
+  btnFsFlip: $("btn-fs-flip"), btnFsExit: $("btn-fs-exit"), fileInput: $("file-input"),
+  smoothRange: $("smooth-range"), smoothVal: $("smooth-val"),
   dominant: $("dominant-label"), dominantPct: $("dominant-pct"),
   bars: $("bars"), inferTime: $("infer-time"),
   excludedList: $("excluded-list"),
@@ -168,8 +171,9 @@ async function selectModel(id) {
   // upewnij się, że właściwy detektor MediaPipe jest gotowy
   await ensureDetectors(spec.type === "landmarks");
 
-  // jednorazowa analiza dla trybu zdjęcia
+  // przelicz aktualny (statyczny/zamrożony) obraz po zmianie modelu
   if (state.source === "upload" && !el.photo.hidden && el.photo.src) analyzeOnce();
+  else if (state.source === "camera" && state.paused && el.video.videoWidth) analyzeOnce();
 }
 
 function updateModelMeta(spec) {
@@ -251,6 +255,9 @@ async function startCamera() {
     });
     el.video.srcObject = state.stream;
     await el.video.play().catch(() => {});
+    state.paused = false;
+    el.btnCamToggle.textContent = "⏸ Zatrzymaj";
+    updateMirror();
     setHint("");
   } catch (e) {
     setHint("Brak dostępu do kamery. Zezwól na kamerę lub użyj trybu „Zdjęcie”.");
@@ -271,7 +278,7 @@ function startLoop() {
   state.running = true;
   let last = 0;
   const tick = async (ts) => {
-    if (state.running && state.source === "camera" && ts - last >= FRAME_INTERVAL_MS) {
+    if (state.running && !state.paused && state.source === "camera" && ts - last >= FRAME_INTERVAL_MS) {
       last = ts;
       await analyze(el.video, el.video.videoWidth, el.video.videoHeight, true);
     }
@@ -327,19 +334,19 @@ const cropCtx = cropCanvas.getContext("2d", { willReadFrequently: true });
 async function runImage(source, w, h, session) {
   state.videoTs = Math.max(state.videoTs + 1, Math.floor(performance.now()));
   const det = state.faceDetector.detectForVideo(source, state.videoTs);
-  const box = pickFaceBox(det, w, h);
+  const raw = rawFaceBox(det, w, h);                                  // ciasny box do wyświetlenia
+  const crop = cropFaceSquare(raw.x, raw.y, raw.w, raw.h, w, h);      // kwadrat z marginesem do modelu
 
   const spec = state.current;
   const S = spec.inputSize;
   cropCanvas.width = S; cropCanvas.height = S;
-  // wytnij kwadrat twarzy z marginesem (port crop_face_square) i przeskaluj do SxS
-  cropCtx.drawImage(source, box.x, box.y, box.w, box.h, 0, 0, S, S);
+  cropCtx.drawImage(source, crop.x, crop.y, crop.w, crop.h, 0, 0, S, S);
   const rgba = cropCtx.getImageData(0, 0, S, S).data;
 
   const tensor = imageToTensor(rgba, S, spec);
   const out = await session.run({ [session.inputNames[0]]: tensor });
   const logits = out[session.outputNames[0]].data;
-  return { probs: softmax(logits), box };
+  return { probs: softmax(logits), box: raw };
 }
 
 function imageToTensor(rgba, S, spec) {
@@ -435,13 +442,13 @@ function computeGeometricFeatures(px, py) {
 // --------------------------------------------------------------------- //
 // Geometria twarzy / nakładka
 // --------------------------------------------------------------------- //
-function pickFaceBox(det, w, h) {
+function rawFaceBox(det, w, h) {
   if (det && det.detections && det.detections.length) {
-    const bb = det.detections[0].boundingBox; // px w układzie źródła
-    return cropFaceSquare(bb.originX, bb.originY, bb.width, bb.height, w, h);
+    const bb = det.detections[0].boundingBox; // ciasny box detekcji (px w układzie źródła)
+    return { x: bb.originX, y: bb.originY, w: bb.width, h: bb.height };
   }
-  // brak twarzy -> centralny kwadrat kadru
-  const side = Math.min(w, h);
+  // brak twarzy -> centralny kwadrat kadru (do wycinka modelu)
+  const side = Math.min(w, h) * 0.7;
   return { x: (w - side) / 2, y: (h - side) / 2, w: side, h: side };
 }
 
@@ -464,16 +471,104 @@ function landmarkBox(px, py, w, h) {
 }
 
 const overlayCtx = el.overlay.getContext("2d");
+
 function drawOverlay(w, h, box, probs) {
   if (el.overlay.width !== w || el.overlay.height !== h) {
     el.overlay.width = w; el.overlay.height = h;
   }
-  overlayCtx.clearRect(0, 0, w, h);
-  if (!box) return;
-  const cls = probs ? state.classes[argmax(probs)] : "neutral";
-  overlayCtx.strokeStyle = EMOTION_COLORS[cls] || "#6c8cff";
-  overlayCtx.lineWidth = Math.max(2, Math.round(w / 180));
-  overlayCtx.strokeRect(box.x, box.y, box.w, box.h);
+  const ctx = overlayCtx;
+  ctx.clearRect(0, 0, w, h);
+  if (!box || !probs) {
+    if (state.current && state.current.type === "landmarks" && !box) drawNoFace(ctx, w, h);
+    return;
+  }
+  const u = Math.min(w, h) / 480;               // współczynnik skali (obraz -> ekran)
+  const top = argmax(probs);
+  const color = EMOTION_COLORS[state.classes[top]] || "#6c8cff";
+
+  // ramka twarzy (lustro dla przedniej kamery, aby pokrywała się z obrazem)
+  const mir = state.source === "camera" && state.facing === "user";
+  const bx = mir ? (w - box.x - box.w) : box.x;
+  ctx.lineWidth = Math.max(2, 3 * u);
+  ctx.strokeStyle = color;
+  ctx.strokeRect(bx, box.y, box.w, box.h);
+
+  // etykieta nad ramką: "<emocja> NN%"
+  const labelTxt = `${state.classesPl[top]} ${Math.round(probs[top] * 100)}%`;
+  const lf = Math.round(20 * u);
+  ctx.font = `700 ${lf}px system-ui, sans-serif`;
+  const padX = 8 * u, padY = 5 * u;
+  const lw = ctx.measureText(labelTxt).width + 2 * padX, lh = lf + 2 * padY;
+  const ly = box.y - lh >= 0 ? box.y - lh : box.y;
+  ctx.fillStyle = color;
+  roundRect(ctx, bx, ly, lw, lh, 6 * u); ctx.fill();
+  ctx.fillStyle = contrastColor(color);
+  ctx.textBaseline = "middle"; ctx.textAlign = "left";
+  ctx.fillText(labelTxt, bx + padX, ly + lh / 2);
+
+  drawBarsPanel(ctx, w, u, probs, top);
+}
+
+// Panel słupków wszystkich klas (prawy górny róg) — odpowiednik draw_overlay z realtime.py
+function drawBarsPanel(ctx, w, u, probs, top) {
+  const font = Math.round(13 * u);
+  const rowH = 20 * u, pad = 8 * u;
+  const labelW = 84 * u, pctW = 40 * u, barW = Math.min(w * 0.24, 150 * u);
+  const panelW = labelW + barW + pctW + pad * 2;
+  const panelH = probs.length * rowH + pad * 2;
+  const x0 = w - panelW - pad, y0 = pad;
+
+  ctx.fillStyle = "rgba(10,12,22,0.55)";
+  roundRect(ctx, x0, y0, panelW, panelH, 10 * u); ctx.fill();
+
+  ctx.textBaseline = "middle";
+  for (let i = 0; i < probs.length; i++) {
+    const cy = y0 + pad + i * rowH + rowH / 2;
+    const isTop = i === top;
+    ctx.font = `${isTop ? "700 " : ""}${font}px system-ui, sans-serif`;
+    ctx.fillStyle = isTop ? "#ffffff" : "rgba(230,233,245,0.82)";
+    ctx.textAlign = "right";
+    ctx.fillText(state.classesPl[i], x0 + pad + labelW - 6 * u, cy);
+
+    const trackX = x0 + pad + labelW, trackY = cy - 6 * u, trackH = 12 * u;
+    ctx.fillStyle = "rgba(255,255,255,0.14)";
+    roundRect(ctx, trackX, trackY, barW, trackH, trackH / 2); ctx.fill();
+    const fw = Math.max(0, barW * probs[i]);
+    if (fw > 0) {
+      ctx.fillStyle = EMOTION_COLORS[state.classes[i]];
+      roundRect(ctx, trackX, trackY, fw, trackH, trackH / 2); ctx.fill();
+    }
+    ctx.textAlign = "left";
+    ctx.fillStyle = isTop ? "#ffffff" : "rgba(230,233,245,0.82)";
+    ctx.fillText(`${Math.round(probs[i] * 100)}%`, trackX + barW + 6 * u, cy);
+  }
+}
+
+function drawNoFace(ctx, w, h) {
+  const u = Math.min(w, h) / 480;
+  ctx.font = `600 ${Math.round(18 * u)}px system-ui, sans-serif`;
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  const t = "nie wykryto twarzy";
+  const tw = ctx.measureText(t).width;
+  ctx.fillStyle = "rgba(0,0,0,0.5)";
+  roundRect(ctx, w / 2 - tw / 2 - 12 * u, h / 2 - 18 * u, tw + 24 * u, 36 * u, 8 * u); ctx.fill();
+  ctx.fillStyle = "#fff"; ctx.fillText(t, w / 2, h / 2);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  if (ctx.roundRect) { ctx.roundRect(x, y, w, h, r); return; }
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function contrastColor(hex) {
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.62 ? "#0b0d16" : "#ffffff";
 }
 
 // --------------------------------------------------------------------- //
@@ -495,10 +590,11 @@ function renderResults(probs) {
 
 function applyEma(probs) {
   if (!state.emaProbs) { state.emaProbs = probs.slice(); return probs; }
+  const a = state.emaAlpha;
   const out = new Array(probs.length);
   let sum = 0;
   for (let i = 0; i < probs.length; i++) {
-    out[i] = EMA_ALPHA * probs[i] + (1 - EMA_ALPHA) * state.emaProbs[i];
+    out[i] = a * probs[i] + (1 - a) * state.emaProbs[i];
     sum += out[i];
   }
   for (let i = 0; i < out.length; i++) out[i] /= sum;
@@ -534,29 +630,69 @@ function bindControls() {
   el.tabCamera.addEventListener("click", () => setSource("camera"));
   el.tabUpload.addEventListener("click", () => setSource("upload"));
 
-  el.btnFlip.addEventListener("click", async () => {
-    state.facing = state.facing === "user" ? "environment" : "user";
-    await startCamera();
+  el.btnFlip.addEventListener("click", flipCamera);
+  el.btnFsFlip.addEventListener("click", flipCamera);
+  el.btnCamToggle.addEventListener("click", togglePause);
+  el.btnFullscreen.addEventListener("click", toggleFullscreen);
+  el.btnFsExit.addEventListener("click", exitFullscreen);
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) el.stage.classList.remove("pseudo-fs");
   });
 
-  el.btnCamToggle.addEventListener("click", async () => {
-    if (state.stream) {
-      stopStream();
-      el.btnCamToggle.textContent = "▶ Wznów";
-      setHint("Kamera zatrzymana.");
-    } else {
-      el.btnCamToggle.textContent = "⏸ Zatrzymaj";
-      await startCamera();
-    }
-  });
+  // Regulacja wygładzania predykcji (suwak): 0 = brak, 100 = maksymalne.
+  const applySmooth = () => {
+    const v = +el.smoothRange.value;
+    state.emaAlpha = 1 - (v / 100) * 0.9;   // v=0 -> alpha 1 (brak), v=100 -> alpha 0.1
+    el.smoothVal.textContent = v === 0 ? "wył." : `${v}%`;
+  };
+  el.smoothRange.addEventListener("input", applySmooth);
+  applySmooth();
 
   el.fileInput.addEventListener("change", (e) => {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
     const url = URL.createObjectURL(file);
-    el.photo.onload = () => { setHint(""); analyzeOnce(); URL.revokeObjectURL(url); };
+    el.photo.onload = () => { el.photo.hidden = false; setHint(""); analyzeOnce(); URL.revokeObjectURL(url); };
     el.photo.src = url;
   });
+}
+
+async function flipCamera() {
+  state.facing = state.facing === "user" ? "environment" : "user";
+  await startCamera();
+}
+
+// „Zatrzymaj" = zamrożenie klatki (podgląd wyników); „Wznów" = powrót do pętli.
+// Pauzujemy element video (pokazuje ostatnią klatkę) i NIE czyścimy nakładki/wyników.
+function togglePause() {
+  if (state.paused) {
+    state.paused = false;
+    el.btnCamToggle.textContent = "⏸ Zatrzymaj";
+    el.video.play().catch(() => {});
+    setHint("");
+  } else {
+    state.paused = true;
+    el.video.pause();
+    el.btnCamToggle.textContent = "▶ Wznów";
+  }
+}
+
+function updateMirror() {
+  const mir = state.source === "camera" && state.facing === "user";
+  el.video.classList.toggle("mirror", mir);
+}
+
+function toggleFullscreen() {
+  if (el.stage.classList.contains("pseudo-fs")) exitFullscreen();
+  else enterFullscreen();
+}
+function enterFullscreen() {
+  el.stage.classList.add("pseudo-fs");
+  if (el.stage.requestFullscreen) el.stage.requestFullscreen().catch(() => {});
+}
+function exitFullscreen() {
+  el.stage.classList.remove("pseudo-fs");
+  if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
 }
 
 async function setSource(mode) {
@@ -571,14 +707,20 @@ async function setSource(mode) {
   el.cameraControls.hidden = !cam;
   el.uploadControls.hidden = cam;
   el.video.hidden = !cam;
-  el.photo.hidden = cam;
+  el.photo.hidden = cam || !el.photo.src;   // nie pokazuj pustego <img> (ikona błędu)
+  updateMirror();
   overlayCtx.clearRect(0, 0, el.overlay.width, el.overlay.height);
 
   if (cam) {
-    if (!state.stream) await startCamera();
+    if (!state.stream) {
+      await startCamera();
+    } else {
+      state.paused = false;
+      el.btnCamToggle.textContent = "⏸ Zatrzymaj";
+      el.video.play().catch(() => {});
+    }
   } else {
     stopStream();
-    el.btnCamToggle.textContent = "⏸ Zatrzymaj";
     if (el.photo.src) analyzeOnce();
     else setHint("Wybierz zdjęcie z twarzą.");
   }
